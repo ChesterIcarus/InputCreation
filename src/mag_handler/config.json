@@ -1,0 +1,38 @@
+{
+    "DEFAULT": {
+        "mag_data_filename": "../../data/raw/simple_tripList.csv",
+        "mag_columns_to_parse": [
+            "hhid",
+            "pnum",
+            "origMaz",
+            "destMaz",
+            "origPurp",
+            "destPurp",
+            "mode",
+            "finalDepartMinute",
+            "tripDistance",
+            "finalTravelMinutes",
+            "finalArriveMinute",
+            "activityMinutesAtDest",
+            "pnrParkMaz"
+        ],
+        "mag_indexes": {
+            "hhid": 0,
+            "pnum": 1,
+            "origMaz": 2,
+            "destMaz": 3,
+            "origPurp": 4,
+            "destPurp": 5,
+            "mode": 6,
+            "finalDepartMinute": 7,
+            "tripDistance": 8,
+            "finalTravelMinutes": 9,
+            "finalArriveMinute": 10,
+            "activityMinutesAtDest": 11,
+            "pnrParkMaz": 12
+        }
+    },
+    "TEST": {
+        "mag_data_filename": "/data/raw/simple_tripList.csv"
+    }
+}
