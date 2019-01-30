@@ -2,8 +2,8 @@ from typing import List, T
 from lxml import etree as et
 from math import floor
 
-from matsim_plan import MatsimPlan, MatsimAct, MatsimLeg
-from encoded_data_util import Purpose, Mode
+from mag_handler.matsim_plan import MatsimPlan, MatsimAct, MatsimLeg
+from mag_handler.encoded_data_util import Purpose, Mode
 
 
 class MatsimXml:

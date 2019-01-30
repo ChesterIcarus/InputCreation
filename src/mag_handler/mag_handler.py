@@ -2,10 +2,10 @@ import numpy as np
 import pandas as pd
 from typing import List, Dict, Tuple
 
-from encoded_data_util import Purpose, Mode, MagConvIndex
-from mag_population import MagPopulation
-from mag_to_matsim import MagToMatsim
-from matsim_plan import MatsimPlan
+from mag_handler.encoded_data_util import Purpose, Mode, MagConvIndex
+from mag_handler.mag_population import MagPopulation
+from mag_handler.mag_to_matsim import MagToMatsim
+from mag_handler.matsim_plan import MatsimPlan
 
 
 class MagHandler:

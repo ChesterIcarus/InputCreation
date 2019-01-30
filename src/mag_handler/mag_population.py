@@ -4,8 +4,7 @@ import pandas as pd
 from typing import Dict, List, Tuple, T
 from functools import partial
 
-from mag_leg import MagLeg
-from encoded_data_util import MagConvIndex
+from mag_handler.encoded_data_util import MagConvIndex
 
 
 class MagAgent:
@@ -59,6 +58,7 @@ class MagHousehold:
 
 
 class MagPopulation:
+    from util.db_util import DatabaseHandle
     proportion: int
     households: Dict[int, MagHousehold]
 
@@ -90,5 +90,4 @@ class MagPopulation:
         if count:
             return {'agent': agent_count, 'household': household_count}
 
-    def convert_maz(self, coords_by_maz: Dict[List[Tuple[float, float]]]):
-        pass
+    # def write_db(self,

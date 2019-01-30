@@ -1,7 +1,7 @@
 from typing import Dict, List, Tuple, T
 
-from encoded_data_util import MagConvIndex
-from mag_population import MagAgent
+from mag_handler.encoded_data_util import MagConvIndex
+from mag_handler.mag_population import MagAgent
 
 
 class MatsimAct:
