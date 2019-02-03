@@ -8,5 +8,5 @@ pass__ = getpass()
 params = {'user': 'root', 'db': 'example',
           'host': 'localhost', 'password': pass__}
 example = PopulationUtil(
-    dill.load(open('data/interim/population.dill', 'rb')))
-example.create_db(DatabaseHandle(**params))
+    params, dill.load(open('data/interim/population.dill', 'rb')))
+example.create_db()

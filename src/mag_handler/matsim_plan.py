@@ -88,9 +88,9 @@ class MatsimPlan:
 
     def create_plan(self, agent: MagAgent):
         self.plan = None
-        if agent.trips == 1:
+        if agent.trip_count == 1:
             self.single(agent.get_trips())
-        elif agent.trips > 1:
+        elif agent.trip_count > 1:
             self.multiple(agent.get_trips())
         else:
             raise ValueError('Agents must have at least one valid Trip')
