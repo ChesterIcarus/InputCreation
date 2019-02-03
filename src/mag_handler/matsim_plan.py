@@ -36,12 +36,12 @@ class MatsimLeg:
 
 
 class MatsimPlan:
-    id_: int
+    plan_id: int
     plan: Tuple[T]
     conv: MagConvIndex
 
-    def __init__(self, id_):
-        self.id_ = id_
+    def __init__(self, plan_id):
+        self.plan_id = plan_id
 
     def single(self, trip: Tuple[T, ...], incl_leg_t=False):
         orig_list = [trip[self.conv.orig_end],

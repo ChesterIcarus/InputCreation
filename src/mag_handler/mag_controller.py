@@ -8,7 +8,7 @@ from mag_handler.mag_to_matsim import MagToMatsim
 from mag_handler.matsim_plan import MatsimPlan
 
 
-class MagHandler:
+class MagController:
     ''' Dedicated to reading in MAG-compliant data format (as a csv file) '''
     conv: MagConvIndex
 

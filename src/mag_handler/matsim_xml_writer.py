@@ -52,7 +52,7 @@ class MatsimXml:
         root = et.Element('population')
         for person_plan in plans:
             person = et.SubElement(root, 'person')
-            person.attrib['id'] = str(person_plan.id_)
+            person.attrib['id'] = str(person_plan.plan_id)
             plan = et.SubElement(person, 'plan')
             plan.attrib['selected'] = 'yes'
 

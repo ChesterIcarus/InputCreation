@@ -8,57 +8,59 @@ from mag_handler.encoded_data_util import MagConvIndex
 
 
 class MagAgent:
-    id_: int
-    hhid: int
-    pnum: int
-    trips: int
-    trip_list: List[Tuple[T, ...]]
+    p_num: int
+    hh_num: int
+    mag_pid: int
+    mag_hhid: int
+    trip_count: int
+    trips: List[Tuple[T, ...]]
 
-    def __init__(self, id_, hhid=0, pnum=0):
-        self.id_ = id_
-        self.hhid = hhid
-        self.pnum = pnum
-        self.trips = 0
-        self.trip_list = list()
+    def __init__(self, p_num, hh_num, mag_pid=0, mag_hhid=0):
+        self.p_num = p_num
+        self.hh_num = hh_num
+        self.mag_pid = mag_pid
+        self.mag_hhid = mag_hhid
+        self.trip_count = 0
+        self.trips = list()
 
     def add_trip(self, trip: List[T]):
-        self.trip_list.append(tuple(trip))
-        self.trips += 1
+        self.trips.append(tuple(trip))
+        self.trip_count += 1
 
     def get_trips(self):
-        if self.trips == 1:
-            return self.trip_list[0]
-        return self.trip_list
+        if self.trip_count == 1:
+            return self.trips[0]
+        return self.trips
 
 
 class MagHousehold:
-    id_: int
-    hhid: int
+    hh_num: int
+    # NOTE: mag_hhid is never used and just there as a reference
+    mag_hhid: int
     agents: Dict[int, MagAgent]
 
-    def __init__(self, id_, hhid=0):
-        self.id_ = id_
-        self.hhid = hhid
+    def __init__(self, hh_num, mag_hhid=0):
+        self.hh_num = hh_num
+        self.mag_hhid = mag_hhid
         self.agents = dict()
 
-    def agent(self, id_) -> MagAgent:
+    def agent(self, p_num) -> MagAgent:
         try:
-            return self.agents[id_]
+            return self.agents[p_num]
         except KeyError:
-            self.agents[id_] = MagAgent(id_)
-        return self.agents[id_]
+            self.agents[p_num] = MagAgent(p_num, self.hh_num)
+        return self.agents[p_num]
 
-    def agent_bool(self, id_) -> Tuple[MagAgent, bool]:
-        ''' Bool flag is True if new agent created, false if agent exists'''
+    def agent_exist(self, p_num) -> Tuple[MagAgent, bool]:
+        ''' Bool flag is False if new agent created, true if agent exists'''
         try:
-            return (self.agents[id_], False)
+            return (self.agents[p_num], True)
         except KeyError:
-            self.agents[id_] = MagAgent(id_)
-        return (self.agents[id_], True)
+            self.agents[p_num] = MagAgent(p_num, self.hh_num)
+        return (self.agents[p_num], False)
 
 
 class MagPopulation:
-    from util.db_util import DatabaseHandle
     proportion: int
     households: Dict[int, MagHousehold]
 
@@ -67,27 +69,25 @@ class MagPopulation:
         self.households = dict()
 
     def define_agents(self, plans: pd.DataFrame, conv: MagConvIndex, count=False):
-        household_count = 0
-        agent_count = 0
+        hh_count = 0
+        p_count = 0
 
         for row in plans.itertuples(index=False, name=None):
+            # These reference the MAG id's themselves, not used currently
             pnum = row[conv.pnum]
             hhid = row[conv.hhid]
-            if hhid in self.households:
-                if pnum in self.households[hhid].agents:
-                    self.households[hhid].agents[pnum].add_trip(row)
-                else:
-                    self.households[hhid].agents[pnum] = MagAgent(agent_count)
-                    self.households[hhid].agents[pnum].add_trip(row)
-                    agent_count += 1
+            if hh_count in self.households:
+                if not self.households[hh_count].agent_exist(p_count):
+                    p_count += 1
+                self.households[hh_count].agents[p_count].add_trip(row)
             else:
-                self.households[hhid] = MagHousehold(household_count, hhid)
-                self.households[hhid].agents[pnum] = MagAgent(agent_count)
-                self.households[hhid].agents[pnum].add_trip(row)
-                household_count
-                agent_count += 1
+                self.households[hh_count] = MagHousehold(
+                    hh_count, mag_hhid=hhid)
+                self.households[hh_count].agents[p_count] = MagAgent(
+                    p_count, hh_count)
+                self.households[hh_count].agents[p_count].add_trip(row)
+                hh_count += 1
+                p_count += 1
 
         if count:
-            return {'agent': agent_count, 'household': household_count}
-
-    # def write_db(self,
+            return {'agent': p_count, 'household': hh_count}

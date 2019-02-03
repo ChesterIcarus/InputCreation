@@ -1,6 +1,6 @@
 {
     "DEFAULT": {
-        "mag_data_filename": "../../data/raw/simple_tripList.csv",
+        "mag_data_filename": "../data/raw/output_disaggTripList.csv",
         "mag_columns_to_parse": [
             "hhid",
             "pnum",

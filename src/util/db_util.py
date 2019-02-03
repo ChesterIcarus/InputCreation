@@ -2,15 +2,14 @@ import MySQLdb as sql
 import MySQLdb.connections as connections
 
 from getpass import getpass
-from dataclasses import dataclass
 
 
 class DatabaseHandle:
-    connection: connections.Connection = None
-    cursor: connections.cursors.Cursor = None
-    user: str = None
-    host: str = None
-    db: str = None
+    connection = connections.Connection
+    cursor = connections.cursors.Cursor
+    user = None
+    host = None
+    db = None
 
     def __init__(self, user, password, db, host):
         self.connection = sql.connect(
