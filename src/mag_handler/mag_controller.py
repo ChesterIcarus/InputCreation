@@ -25,8 +25,8 @@ class MagController:
         return plans
 
     def plans_to_population(self, plans) -> MagPopulation:
-        pop = MagPopulation()
-        pop.define_agents(plans, self.conv)
+        pop = MagPopulation(self.conv)
+        pop.define_agents(plans)
         return pop
 
     def population_to_matsim(self, population: MagPopulation) -> List[MatsimPlan]:

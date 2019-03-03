@@ -71,3 +71,14 @@ class Mode(Enum):
         ''' Return true if the instance of Mode indicates the current 
             agent is a driver, ie. a person driving a car'''
         return (self.value not in [4, 13, 14])
+
+
+class Coordinate:
+    x: float = None
+    y: float = None
+    system: str = None
+
+    def __init__(self, x=0, y=0, system=0):
+        self.x = x
+        self.y = y
+        self.system = system

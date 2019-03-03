@@ -31,12 +31,11 @@ class MatsimXml:
         if act.duration:
             node.attrib['dur'] = self.time_str(abs(act.duration))
 
-    def set_loc(self, plan: MatsimPlan, node):
-        if self.location_type == 'maz':
-            node.attrib['maz'] = str(plan.maz)
-        if self.location_type == 'coord':
-            node.attrib['x'] = str(plan.coord[0])
-            node.attrib['y'] = str(plan.coord[1])
+    def set_loc(self, act: MatsimAct, node):
+        node.attrib['maz'] = str(act.maz)
+        node.attrib['apn'] = str(act.apn)
+        node.attrib['x'] = str(act.coord[0])
+        node.attrib['y'] = str(act.coord[1])
 
     def leg(self, parent, plan: MatsimLeg) -> et.ElementBase:
         leg = et.SubElement(parent, 'leg')

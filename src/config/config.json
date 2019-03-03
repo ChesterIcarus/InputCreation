@@ -1,6 +1,7 @@
 {
     "FULL": {
-        "mag_path": "data/raw/output_disaggTripList.csv",
+        "mag_path": "../../data/raw_travel_data/output_disaggTripList.csv",
+        "mapping_path": "../../data/raw_travel_data/full_maricop_parcel_coord_by_MAZ.json",
         "mag_column_ids": [
             "hhid",
             "pnum",
@@ -31,7 +32,7 @@
             "activityMinutesAtDest": 11,
             "pnrParkMaz": 12
         },
-        "xml_output_path": "data/processed/full_auto_inc_id_pop.xml",
+        "xml_output_path": "../../data/processed_MAG_data/full_auto_inc_id_pop.xml",
         "database": {
             "user": "root",
             "db": "example",
@@ -40,7 +41,7 @@
         }
     },
     "TEST": {
-        "mag_path": "data/raw/simple_tripList.csv",
+        "mag_path": "../../data/raw_travel_data/simple_tripList.csv",
         "mag_column_ids": [
             "hhid",
             "pnum",
@@ -71,7 +72,7 @@
             "activityMinutesAtDest": 11,
             "pnrParkMaz": 12
         },
-        "xml_output_path": "data/processed/test_auto_inc_id_pop.xml",
+        "xml_output_path": "../../data/processed_MAG_data/test_auto_inc_id_pop.xml",
         "database": {
             "user": "root",
             "db": "example",

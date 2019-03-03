@@ -3,3 +3,4 @@
 *.csv
 *.geojson
 src/mag_handler/__pycache__
+src/__pycache__*

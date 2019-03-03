@@ -2,16 +2,18 @@ from typing import Dict, List, Tuple, T
 
 from mag_handler.encoded_data_util import MagConvIndex
 from mag_handler.mag_population import MagAgent
+from mag_handler.encoded_data_util import Coordinate
 
 
 class MatsimAct:
     end_time: T
     duration: T
-    coord: Tuple[float, float]
+    apn: int
     maz: int
+    coord: Coordinate
     type_: str
 
-    def __init__(self, end, dur, type_, coord=None, maz=None):
+    def __init__(self, end, dur, type_, coord=Coordinate(), maz=None, apn=None):
         ''' If a MatsimAct is the first Act in a Plan, end_tim is type str.
                 Else, it is False. Only initial Acts have an end_time in Matsim.
             If both end_time and duration are False, it is the last Act in a Plan
@@ -21,6 +23,7 @@ class MatsimAct:
         self.type_ = type_
         self.coord = coord
         self.maz = maz
+        self.apn = apn
 
 
 class MatsimLeg:

@@ -8,7 +8,11 @@ from mag_handler.population_util import PopulationUtil
 
 with open('src/config/config.json', 'r') as handle:
     config = json.load(handle)
+
 params = config['FULL']
+
+with open(params['mapping_path'], 'r') as handle:
+    apn_maz_mapping = json.load(handle)
 
 pw = getpass()
 params['database']['password'] = pw
@@ -27,8 +31,8 @@ pop_util.create_db()
 # print(len(population.households[1].agents[1].trips))
 # print(len(list(population.households.keys())))
 # print(len(list(population.households[1].agents.keys())))
-
+population.household_to_coord(apn_maz_mapping)
 matsim = handler.population_to_matsim(population)
 
-writer = MatsimXml(location_type='maz')
+writer = MatsimXml(location_type='coord')
 writer.write(matsim, params['xml_output_path'])
