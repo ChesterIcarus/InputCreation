@@ -47,7 +47,7 @@ if sliced:
         print(f"{i} done")
 
         population.household_to_coord(apn_maz_mapping)
-        population.write_agent_apn_crosswalk(
+        population.write_agent_home_apn(
             f'agent_crosswalk_apn_maz_{i}.csv')
         del population
 else:
@@ -67,4 +67,4 @@ else:
     # print(f"{i} done")
 
     population.household_to_coord(apn_maz_mapping)
-    population.write_agent_apn_crosswalk('agent_crosswalk_apn_maz.csv')
+    population.write_agent_home_apn('agent_crosswalk_apn_maz.csv')

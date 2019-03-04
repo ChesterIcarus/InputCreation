@@ -17,8 +17,14 @@ class MagToMatsim:
 
     def convert(self, population: MagPopulation) -> List[MatsimPlan]:
         matims_plans = list()
+        household: MagHousehold
         for household in list(population.households.values()):
+            # Need to assign household APN here
+            agent: MagAgent
             for agent in list(household.agents.values()):
-                matims_plans.append(MatsimPlan(agent.p_num))
-                matims_plans[-1].create_plan(agent)
+                mat_plan = MatsimPlan(agent)
+                matims_plans.append(mat_plan)
         return matims_plans
+
+    def home_creation(self, maz, mapping):
+        return 0

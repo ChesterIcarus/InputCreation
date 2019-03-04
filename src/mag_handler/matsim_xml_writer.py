@@ -11,17 +11,16 @@ class MatsimXml:
         '''Location type is either (`maz` | `coord`)'''
         self.location_type = location_type
 
-    def time_str(self, minutes):
-        hour = str(floor(minutes / 60))
-        if len(hour) == 1:
-            hour = f'0{hour}'
-        minute = str(floor(minutes - (int(hour) * 60)))
-        if len(minute) == 1:
-            minute = f'0{minute}'
-        second = str(floor((minutes - floor(minutes)) * 60))
-        if len(second) == 1:
-            second = f'0{second}'
-        return f'{hour}:{minute}:{second}'
+    def leg(self, parent, leg: MatsimLeg) -> et.ElementBase:
+        leg = et.SubElement(parent, 'leg')
+        leg.attrib['mode'] = leg.mode
+        leg.attrib['duration'] = leg.duration
+
+    def act(self, parent, act: MatsimAct) -> et.ElementBase:
+        node = et.SubElement(parent, 'act')
+        node.attrib['type'] = act.purpose.name
+        self.set_loc(act, node)
+        self.set_time(act, node)
 
     def set_time(self, act: MatsimAct, node):
         '''0 = end_time; 1 = duration'''
@@ -37,15 +36,17 @@ class MatsimXml:
         node.attrib['x'] = str(act.coord[0])
         node.attrib['y'] = str(act.coord[1])
 
-    def leg(self, parent, plan: MatsimLeg) -> et.ElementBase:
-        leg = et.SubElement(parent, 'leg')
-        leg.attrib['mode'] = Mode(plan.mode).name
-
-    def act(self, parent, act: MatsimAct) -> et.ElementBase:
-        node = et.SubElement(parent, 'act')
-        node.attrib['type'] = Purpose(act.type_).name
-        self.set_loc(act, node)
-        self.set_time(act, node)
+    def time_str(self, minutes):
+        hour = str(floor(minutes / 60))
+        if len(hour) == 1:
+            hour = f'0{hour}'
+        minute = str(floor(minutes - (int(hour) * 60)))
+        if len(minute) == 1:
+            minute = f'0{minute}'
+        second = str(floor((minutes - floor(minutes)) * 60))
+        if len(second) == 1:
+            second = f'0{second}'
+        return f'{hour}:{minute}:{second}'
 
     def write(self, plans: List[MatsimPlan], filepath):
         root = et.Element('population')

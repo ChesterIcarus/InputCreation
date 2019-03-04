@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import dask.dataframe as dd
 from typing import List, Dict, Tuple
 
 from mag_handler.encoded_data_util import Purpose, Mode, MagConvIndex
@@ -12,15 +13,17 @@ class MagController:
     ''' Dedicated to reading in MAG-compliant data format (as a csv file) '''
     conv: MagConvIndex
 
-    def __init__(self, mag_indexes):
-        self.conv = MagConvIndex(mag_indexes)
+    def __init__(self, conv: MagConvIndex):
+        self.conv = conv
 
     def plans_by_col(self, filename, columns, col_dtype=None) -> pd.DataFrame:
-        plans = pd.read_csv(filename, usecols=columns, dtype=col_dtype)
+        plans = dd.read_csv(filename,
+                            usecols=columns,
+                            dtype=col_dtype)
         mask = list()
         # This loop filters based on w/e the agent is the driver or not
         for row in plans.itertuples():
-            mask.append(Mode(row[7]).driver())
+            mask.append(row[self.conv.mode] not in [4, 13, 14])
         plans = plans[pd.Series(mask)]
         return plans
 
@@ -28,7 +31,3 @@ class MagController:
         pop = MagPopulation(self.conv)
         pop.define_agents(plans)
         return pop
-
-    def population_to_matsim(self, population: MagPopulation) -> List[MatsimPlan]:
-        mag_to_mat = MagToMatsim(self.conv)
-        return mag_to_mat.convert(population)

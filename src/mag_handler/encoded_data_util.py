@@ -12,6 +12,7 @@ class MagConvIndex:
     dest_loc: int
     dest_start: int
     dest_type: int
+    dest_dur: int
     leg_time: int
 
     def __init__(self, mag_indexes: Dict[str, int]):
