@@ -15,16 +15,13 @@ class MagToMatsim:
         self.conv = conv
         MatsimPlan.conv = self.conv
 
-    def convert(self, population: MagPopulation) -> List[MatsimPlan]:
+    def convert(self, population: MagPopulation, mapping: pd.DataFrame) -> List[MatsimPlan]:
         matims_plans = list()
+        # Use dask parrellization here
         household: MagHousehold
         for household in list(population.households.values()):
-            # Need to assign household APN here
             agent: MagAgent
             for agent in list(household.agents.values()):
-                mat_plan = MatsimPlan(agent)
+                mat_plan = MatsimPlan(agent, mapping)
                 matims_plans.append(mat_plan)
         return matims_plans
-
-    def home_creation(self, maz, mapping):
-        return 0

@@ -71,7 +71,9 @@ class Mode(Enum):
     def driver(self):
         ''' Return true if the instance of Mode indicates the current 
             agent is a driver, ie. a person driving a car'''
-        return (self.value not in [4, 13, 14])
+        return (self.value not in [self.hov_passenger,
+                                   self.taxi,
+                                   self.school_bus])
 
 
 class Coordinate:

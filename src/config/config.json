@@ -1,7 +1,7 @@
 {
     "FULL": {
         "mag_path": "../../data/raw_travel_data/output_disaggTripList.csv",
-        "mapping_path": "../../data/raw_travel_data/full_maricop_parcel_coord_by_MAZ.json",
+        "mapping_path": "../../data/processed_MAG_data/parcel_by_maz.csv",
         "mag_column_ids": [
             "hhid",
             "pnum",
@@ -32,7 +32,7 @@
             "activityMinutesAtDest": 11,
             "pnrParkMaz": 12
         },
-        "xml_output_path": "../../data/processed_MAG_data/full_auto_inc_id_pop.xml",
+        "xml_output_path": "matsim_plans_from_mag.xml",
         "database": {
             "user": "root",
             "db": "example",

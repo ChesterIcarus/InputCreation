@@ -31,10 +31,10 @@ class MatsimXml:
             node.attrib['dur'] = self.time_str(abs(act.duration))
 
     def set_loc(self, act: MatsimAct, node):
-        node.attrib['maz'] = str(act.maz)
-        node.attrib['apn'] = str(act.apn)
-        node.attrib['x'] = str(act.coord[0])
-        node.attrib['y'] = str(act.coord[1])
+        node.attrib['maz'] = act.maz
+        node.attrib['apn'] = act.apn
+        node.attrib['x'] = act.coord[0]
+        node.attrib['y'] = act.coord[1]
 
     def time_str(self, minutes):
         hour = str(floor(minutes / 60))

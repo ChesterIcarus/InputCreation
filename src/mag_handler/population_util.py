@@ -9,7 +9,7 @@ from util.db_util import DatabaseHandle
 
 class PopulationUtil:
     population: MagPopulation = None
-    db = None
+    db: DatabaseHandle
 
     def __init__(self, db_params, population=None):
         self.population = population
@@ -18,26 +18,29 @@ class PopulationUtil:
     def create_db(self, table_name='ModMag', custom_schema=False, write_max=0):
         ''' For writing all plan '''
         self.create_table(table_name, custom_schema=custom_schema)
-        row_list = list()
+        trips = list()
         if write_max != 0:
             count = 0
+            house: MagHousehold
             for house in list(self.population.households.values()):
+                agent: MagAgent
                 for agent in list(house.agents.values()):
-                    rows = self.agent_to_rows(agent)
-                    count += len(rows)
-                    row_list.extend(rows)
+                    count += agent.trip_count
+                    trips.extend(agent.trips)
 
                 if count > write_max:
-                    self.db.write_rows(row_list)
-                    row_list.clear()
+                    self.db.write_rows(trips)
+                    trips.clear()
                     count = 0
-            if len(row_list) != 0:
-                self.db.write_rows(row_list)
+            if len(trips) != 0:
+                self.db.write_rows(trips)
         else:
+            house: MagHousehold
             for house in list(self.population.households.values()):
+                agent: MagAgent
                 for agent in list(house.agents.values()):
-                    row_list.extend(self.agent_to_rows(agent))
-            self.db.write_rows(row_list)
+                    trips.extend(agent.trips)
+            self.db.write_rows(trips)
 
     def create_table(self, table_name, custom_schema=False):
         schema = '''(
@@ -58,13 +61,3 @@ class PopulationUtil:
         if custom_schema:
             schema = custom_schema
         self.db.create_db(table_name, schema)
-
-    def agent_to_rows(self, agent: MagAgent) -> List[Tuple[T, ...]]:
-        rows = list()
-        for trip in agent.trips:
-            trip = list(trip)
-            for index in [12, 11, 10, 8]:
-                if trip[index] < 0:
-                    trip[index] = 0
-            rows.append(tuple(trip))
-        return rows

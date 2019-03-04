@@ -54,10 +54,10 @@ class MagHousehold:
     mag_hhid: int
     agents: Dict[int, MagAgent]
     maz: int
-    apn: int
+    apn: str
     coord: Coordinate
 
-    def __init__(self, hh_num, mag_hhid=0, maz=0, apn=0):
+    def __init__(self, hh_num, mag_hhid=0, maz=0, apn='0'):
         self.hh_num = hh_num
         self.mag_hhid = mag_hhid
         self.agents = dict()
@@ -102,6 +102,7 @@ class MagPopulation:
         self.conv = conv
 
     def define_agents(self, plans: pd.DataFrame, count=False):
+        # TODO: Investigate using dask for speedup on this as well
         hh_count = 0
         p_count = 0
 
@@ -128,7 +129,7 @@ class MagPopulation:
         # after we have defined every agent
         household: MagHousehold
         for household in list(self.households.values()):
-            household.set_maz(self.conv.orig_loc)
+            household.create_maz(self.conv.orig_loc)
             agent: MagAgent
             for agent in list(household.values()):
                 agent.clean_trips(self.conv)
@@ -136,26 +137,3 @@ class MagPopulation:
 
         if count:
             return {'agent': p_count, 'household': hh_count}
-
-    def household_to_coord(self, apn_by_maz):
-        household: MagHousehold
-        for household in list(self.households.items()):
-            agents = list(household[1].agents.values())
-            maz = str(agents[0].trips[0][self.conv.orig_loc])
-            hh_apn_idx = np.random.randint(0, len(apn_by_maz[maz]))
-            hh_apn = apn_by_maz[maz][hh_apn_idx]
-
-            self.households[household[0]].apn = hh_apn[0]
-            self.households[household[0]].coord.x = hh_apn[1]
-            self.households[household[0]].coord.y = hh_apn[2]
-
-    def write_agent_home_apn(self, filename):
-        with open(filename, 'w+') as handle:
-            csv_writer = csv.writer(handle)
-            household: MagHousehold
-            for household in list(self.households.items()):
-                agent: MagAgent
-                for agent in list(household[1].agents.values()):
-                    tmp = [agent.mag_pnum, agent.mag_hhid,
-                           household[1].apn, household[1].coord.x, household[1].coord.y]
-                    csv_writer.writerow(tmp)

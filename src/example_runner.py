@@ -1,5 +1,6 @@
 import dill
 import json
+import pandas as pd
 from getpass import getpass
 
 
@@ -11,35 +12,32 @@ from mag_handler.mag_to_matsim import MagToMatsim
 from mag_handler.matsim_xml_writer import MatsimXml
 
 if __name__ == '__main__':
-    with open('src/config/config.json', 'r') as handle:
-        config = json.load(handle)
 
+    with open('config/config.json', 'r') as handle:
+        config = json.load(handle)
     params = config['FULL']
 
-    with open(params['mapping_path'], 'r') as handle:
-        apn_maz_mapping = json.load(handle)
+    apn_maz_mapping = pd.read_csv(params['mapping_path'])
 
-    pw = getpass()
-    params['database']['password'] = pw
+    # pw = getpass()
+    # params['database']['password'] = pw
+    # pop_util = PopulationUtil(params['database'])
+    # pop_util.population = population
     index_conversion = MagConvIndex(params['mag_indexes'])
-    pop_util = PopulationUtil(params['database'])
 
-    handler = MagController(index_conversion)
-    plans = handler.plans_by_col(params['mag_path'],
-                                 params['mag_column_ids'])
-    population = handler.plans_to_population(plans)
+    controller = MagController(index_conversion)
+    plans = controller.plans_by_col(params['mag_path'],
+                                    params['mag_column_ids'])
+    population = controller.plans_to_population(plans)
 
-    pop_util.population = population
-    pop_util.create_db()
+    with open('src/cleaned_mag_pop.pickle', 'wb+') as handle:
+        dill.dump(population, handle)
 
-    # print(len(plans))
-    # print(plans[0:10])
-    # print(len(population.households[1].agents[1].trips))
-    # print(len(list(population.households.keys())))
-    # print(len(list(population.households[1].agents.keys())))
-    population.household_to_coord(apn_maz_mapping)
     mag_to_mat = MagToMatsim(conv=index_conversion)
-    matsim = mag_to_mat.convert(population)
+    matsim = mag_to_mat.convert(population, apn_maz_mapping)
+
+    with open('src/matsim_plans.pickle', 'wb+') as handle:
+        dill.dump(matsim, handle)
 
     writer = MatsimXml(location_type='coord')
     writer.write(matsim, params['xml_output_path'])

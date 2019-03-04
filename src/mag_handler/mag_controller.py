@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import dask.dataframe as dd
+import dask.multiprocessing
 from typing import List, Dict, Tuple
 
 from mag_handler.encoded_data_util import Purpose, Mode, MagConvIndex
@@ -18,12 +19,15 @@ class MagController:
 
     def plans_by_col(self, filename, columns, col_dtype=None) -> pd.DataFrame:
         plans = dd.read_csv(filename,
+                            # chunksize=1000000,
                             usecols=columns,
                             dtype=col_dtype)
+        plans = plans.compute(get=dask.multiprocessing.get)
         mask = list()
+        passenger = [Mode.hov_passenger, Mode.taxi, Mode.school_bus]
         # This loop filters based on w/e the agent is the driver or not
         for row in plans.itertuples():
-            mask.append(row[self.conv.mode] not in [4, 13, 14])
+            mask.append(row[self.conv.mode] not in passenger)
         plans = plans[pd.Series(mask)]
         return plans
 
