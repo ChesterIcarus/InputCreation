@@ -22,6 +22,5 @@ class MagToMatsim:
         for household in list(population.households.values()):
             agent: MagAgent
             for agent in list(household.agents.values()):
-                mat_plan = MatsimPlan(agent, mapping)
-                matims_plans.append(mat_plan)
+                matims_plans.append(MatsimPlan(agent, mapping))
         return matims_plans

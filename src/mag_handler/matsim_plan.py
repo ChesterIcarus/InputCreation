@@ -44,9 +44,9 @@ class MatsimPlan:
     home_maz: int
     home_apn: str
     home_coord: Coordinate
+    mapping: pd.DataFrame
     conv: MagConvIndex
-
-    events: List
+    events: Tuple[T, ...]
 
     def __init__(self, agent: MagAgent, mapping: pd.DataFrame):
         self.mapping = mapping
@@ -54,9 +54,11 @@ class MatsimPlan:
         self.mag_pnum = agent.mag_pnum
         self.mag_hhid = agent.mag_hhid
         home = self.random_apn(agent.home_maz)
-        self.home_maz = home[0]
-        self.home_apn = home[1]
-        self.home_coord = Coordinate(x=home[2], y=home[3])
+        self.home_maz = home.iloc[0, 0]
+        self.home_apn = home.iloc[0, 1]
+        self.home_coord = Coordinate(x=home.iloc[0, 2], y=home.iloc[0, 3])
+        self.events = tuple([])
+        self.create_plan(agent)
 
     def random_apn(self, maz: int) -> str:
         ''' Get a random APN for a given MAZ. '''
@@ -104,7 +106,7 @@ class MatsimPlan:
                               coord=self.home_coord,
                               apn=self.home_apn,
                               maz=self.home_maz)
-        return tuple([final_leg, final_act])
+        return [final_leg, final_act]
 
     def standard_event_creation(self, trip):
         # Give actor APN's and coordinate for trips based off MAZ/trip type
@@ -121,11 +123,9 @@ class MatsimPlan:
     def create_plan(self, agent: MagAgent):
         ''' A MAG travel diary n trips long yeilds: 
                 (n+1) MATsim Acts, and (n) MATsim Legs '''
-        self.plan = None
         if agent.trip_count == 1:
             self.single(agent.get_trips())
         elif agent.trip_count > 1:
             self.multiple(agent.get_trips())
         else:
             raise ValueError('Agents must have at least one valid Trip')
-        self.events = tuple(self.events)

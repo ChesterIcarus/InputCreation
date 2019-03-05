@@ -33,6 +33,8 @@
             "pnrParkMaz": 12
         },
         "xml_output_path": "matsim_plans_from_mag.xml",
+        "population_pickle_path": "cleaned_mag_pop.pickle",
+        "matsim_pickle_path": "matsim_plans.pickle",
         "database": {
             "user": "root",
             "db": "example",
@@ -42,6 +44,7 @@
     },
     "TEST": {
         "mag_path": "../../data/raw_travel_data/simple_tripList.csv",
+        "mapping_path": "../../data/processed_MAG_data/parcel_by_maz.csv",
         "mag_column_ids": [
             "hhid",
             "pnum",
@@ -72,7 +75,9 @@
             "activityMinutesAtDest": 11,
             "pnrParkMaz": 12
         },
-        "xml_output_path": "../../data/processed_MAG_data/test_auto_inc_id_pop.xml",
+        "xml_output_path": "TEST_matsim_plans_from_mag.xml",
+        "population_pickle_path": "TEST_cleaned_mag_pop.pickle",
+        "matsim_pickle_path": "TEST_matsim_plans.pickle",
         "database": {
             "user": "root",
             "db": "example",

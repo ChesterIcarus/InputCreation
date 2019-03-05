@@ -12,9 +12,9 @@ class MatsimXml:
         self.location_type = location_type
 
     def leg(self, parent, leg: MatsimLeg) -> et.ElementBase:
-        leg = et.SubElement(parent, 'leg')
-        leg.attrib['mode'] = leg.mode
-        leg.attrib['duration'] = leg.duration
+        node = et.SubElement(parent, 'leg')
+        node.attrib['mode'] = str(leg.mode)
+        node.attrib['duration'] = str(leg.duration)
 
     def act(self, parent, act: MatsimAct) -> et.ElementBase:
         node = et.SubElement(parent, 'act')
@@ -31,10 +31,10 @@ class MatsimXml:
             node.attrib['dur'] = self.time_str(abs(act.duration))
 
     def set_loc(self, act: MatsimAct, node):
-        node.attrib['maz'] = act.maz
-        node.attrib['apn'] = act.apn
-        node.attrib['x'] = act.coord[0]
-        node.attrib['y'] = act.coord[1]
+        node.attrib['maz'] = str(act.maz)
+        node.attrib['apn'] = str(act.apn)
+        node.attrib['x'] = str(act.coord.x)
+        node.attrib['y'] = str(act.coord.y)
 
     def time_str(self, minutes):
         hour = str(floor(minutes / 60))
@@ -50,23 +50,25 @@ class MatsimXml:
 
     def write(self, plans: List[MatsimPlan], filepath):
         root = et.Element('population')
-        for person_plan in plans:
+        matplan: MatsimPlan
+        for matplan in plans:
             person = et.SubElement(root, 'person')
-            person.attrib['id'] = str(person_plan.plan_id)
+            person.attrib['id'] = str(matplan.person_id)
             plan = et.SubElement(person, 'plan')
             plan.attrib['selected'] = 'yes'
 
             trips = et.SubElement(plan, 'act')
-            trips.attrib['type'] = Purpose(person_plan.plan[0].type_).name
-            self.set_loc(person_plan.plan[0], trips)
-            self.set_time(person_plan.plan[0], trips)
+            trips.attrib['type'] = matplan.events[0].purpose.name
+            self.set_loc(matplan.events[0], trips)
+            self.set_time(matplan.events[0], trips)
 
-            for value in person_plan.plan[1::]:
+            for value in matplan.events:
                 if isinstance(value, MatsimAct):
                     self.act(plan, value)
                 elif isinstance(value, MatsimLeg):
                     self.leg(plan, value)
                 else:
+                    print(value)
                     raise ValueError(
                         'Each value in a plan must be either MatsimAct or MatsimLeg')
         with open(filepath, 'wb+') as handle:

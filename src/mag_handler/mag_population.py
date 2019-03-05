@@ -31,10 +31,10 @@ class MagAgent:
 
     def clean_trips(self, conv: MagConvIndex):
         keys = [
-            MagConvIndex.orig_end,
-            MagConvIndex.dest_start,
-            MagConvIndex.dest_dur,
-            MagConvIndex.leg_time
+            conv.orig_end,
+            conv.dest_start,
+            conv.dest_dur,
+            conv.leg_time
         ]
         for index, value in enumerate(self.trips):
             trip = list(value)
@@ -131,7 +131,7 @@ class MagPopulation:
         for household in list(self.households.values()):
             household.create_maz(self.conv.orig_loc)
             agent: MagAgent
-            for agent in list(household.values()):
+            for agent in list(household.agents.values()):
                 agent.clean_trips(self.conv)
                 agent.home_maz = household.maz
 
