@@ -4,7 +4,7 @@ import dask.dataframe as dd
 import dask.multiprocessing
 from typing import List, Dict, Tuple
 
-from mag_handler.encoded_data_util import Purpose, Mode, MagConvIndex
+from mag_handler.encoded_data_util import purpose_encode, mode_encode, MagConvIndex
 from mag_handler.mag_population import MagPopulation
 from mag_handler.mag_to_matsim import MagToMatsim
 from mag_handler.matsim_plan import MatsimPlan
@@ -24,7 +24,9 @@ class MagController:
                             dtype=col_dtype)
         plans = plans.compute(get=dask.multiprocessing.get)
         mask = list()
-        passenger = [Mode.hov_passenger, Mode.taxi, Mode.school_bus]
+        passenger = ['hov_passenger',
+                     'taxi',
+                     'school_bus']
         # This loop filters based on w/e the agent is the driver or not
         for row in plans.itertuples():
             mask.append(row[self.conv.mode] not in passenger)

@@ -9,7 +9,7 @@ from mag_handler.encoded_data_util import MagConvIndex
 
 
 class MagToMatsim:
-    mag_indexes: Dict[str, int]
+    conv: MagConvIndex = None
 
     def __init__(self, conv: MagConvIndex):
         self.conv = conv

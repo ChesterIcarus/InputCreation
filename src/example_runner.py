@@ -16,7 +16,7 @@ if __name__ == '__main__':
     with open('config/config.json', 'r') as handle:
         config = json.load(handle)
         params = config['TEST']
-    POPULATION_CONVERSION = False
+    POPULATION_CONVERSION = True
     RUN_MAG_MAT = True
 
     apn_maz_mapping = pd.read_csv(params['mapping_path'])
@@ -57,4 +57,4 @@ if __name__ == '__main__':
                   params['matsim_pickle_path'])
 
     writer = MatsimXml(location_type='coord')
-    writer.write(matsim, params['xml_output_path'])
+    writer.write(matsim, params['xml_output_path'], use_mag=False)

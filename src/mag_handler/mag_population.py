@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from typing import Dict, List, Tuple, T
 
-from mag_handler.encoded_data_util import MagConvIndex, Coordinate
+from mag_handler.encoded_data_util import MagConvIndex, coordinate
 
 
 class MagAgent:
@@ -55,7 +55,7 @@ class MagHousehold:
     agents: Dict[int, MagAgent]
     maz: int
     apn: str
-    coord: Coordinate
+    coord: coordinate = None
 
     def __init__(self, hh_num, mag_hhid=0, maz=0, apn='0'):
         self.hh_num = hh_num
@@ -63,7 +63,7 @@ class MagHousehold:
         self.agents = dict()
         self.maz = maz
         self.apn = apn
-        self.coord = Coordinate()
+        self.coord = None
 
     def agent(self, p_num) -> MagAgent:
         try:
@@ -77,8 +77,10 @@ class MagHousehold:
         try:
             return (self.agents[p_num], True)
         except KeyError:
-            self.agents[p_num] = MagAgent(
-                p_num, self.hh_num, mag_pnum=mag_pnum, mag_hhid=mag_hhid)
+            self.agents[p_num] = MagAgent(p_num,
+                                          self.hh_num,
+                                          mag_pnum=mag_pnum,
+                                          mag_hhid=mag_hhid)
         return (self.agents[p_num], False)
 
     def create_maz(self, origin_index):
@@ -110,16 +112,17 @@ class MagPopulation:
             pnum = row[self.conv.pnum]
             hhid = row[self.conv.hhid]
             if hh_count in self.households:
-                if not self.households[hh_count].\
-                        agent_exist(p_count, mag_pnum=pnum, mag_hhid=hhid):
+                if not self.households[hh_count
+                                       ].agent_exist(p_count,
+                                                     mag_pnum=pnum,
+                                                     mag_hhid=hhid):
                     p_count += 1
                 self.households[hh_count].agents[p_count].add_trip(row)
             else:
-                self.households[hh_count]\
-                    = MagHousehold(hh_count, mag_hhid=hhid)
-                self.households[hh_count].agents[p_count]\
-                    = MagAgent(p_count, hh_count,
-                               mag_pnum=pnum, mag_hhid=hhid)
+                self.households[hh_count] = MagHousehold(hh_count,
+                                                         mag_hhid=hhid)
+                self.households[hh_count].agents[p_count] = MagAgent(
+                    p_count, hh_count, mag_pnum=pnum, mag_hhid=hhid)
 
                 self.households[hh_count].agents[p_count].add_trip(row)
                 hh_count += 1

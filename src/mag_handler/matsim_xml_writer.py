@@ -1,9 +1,9 @@
-from typing import List, T
+from typing import List, Dict, T
 from lxml import etree as et
 from math import floor
 
 from mag_handler.matsim_plan import MatsimPlan, MatsimAct, MatsimLeg
-from mag_handler.encoded_data_util import Purpose, Mode
+from mag_handler.encoded_data_util import purpose_encode, mode_encode
 
 
 class MatsimXml:
@@ -11,32 +11,35 @@ class MatsimXml:
         '''Location type is either (`maz` | `coord`)'''
         self.location_type = location_type
 
-    def leg(self, parent, leg: MatsimLeg) -> et.ElementBase:
-        node = et.SubElement(parent, 'leg')
-        node.attrib['mode'] = str(leg.mode)
-        node.attrib['duration'] = str(leg.duration)
+    def leg(self, leg: MatsimLeg) -> Dict[str, str]:
+        node = dict()
+        node['mode'] = leg.mode
+        return node
 
-    def act(self, parent, act: MatsimAct) -> et.ElementBase:
-        node = et.SubElement(parent, 'act')
-        node.attrib['type'] = act.purpose.name
-        self.set_loc(act, node)
-        self.set_time(act, node)
+    def act(self, act: MatsimAct) -> Dict[str, str]:
+        node = dict()
+        node['type'] = act.purpose
+        node = self.set_loc(act, node)
+        node = self.set_time(act, node)
+        return node
 
-    def set_time(self, act: MatsimAct, node):
+    def set_time(self, act: MatsimAct, node: Dict[str, str]) -> Dict[str, str]:
         '''0 = end_time; 1 = duration'''
         if act.end_time:
-            node.attrib['end_time'] = self.time_str(
+            node['end_time'] = self.time_str(
                 abs(act.end_time) + (4.5 * 60))
         if act.duration:
-            node.attrib['dur'] = self.time_str(abs(act.duration))
+            node['dur'] = self.time_str(abs(act.duration))
+        return node
 
-    def set_loc(self, act: MatsimAct, node):
-        node.attrib['maz'] = str(act.maz)
-        node.attrib['apn'] = str(act.apn)
-        node.attrib['x'] = str(act.coord.x)
-        node.attrib['y'] = str(act.coord.y)
+    def set_loc(self, act: MatsimAct, node: Dict[str, str]) -> Dict[str, str]:
+        node['maz'] = str(act.maz)
+        node['apn'] = str(act.apn)
+        node['x'] = str(act.coord.x)
+        node['y'] = str(act.coord.y)
+        return node
 
-    def time_str(self, minutes):
+    def time_str(self, minutes: int) -> str:
         hour = str(floor(minutes / 60))
         if len(hour) == 1:
             hour = f'0{hour}'
@@ -48,28 +51,41 @@ class MatsimXml:
             second = f'0{second}'
         return f'{hour}:{minute}:{second}'
 
-    def write(self, plans: List[MatsimPlan], filepath):
+    def write(self, plans: List[MatsimPlan], filepath: str, use_mag=True):
         root = et.Element('population')
         matplan: MatsimPlan
+        uid = 0
         for matplan in plans:
             person = et.SubElement(root, 'person')
-            person.attrib['id'] = str(matplan.person_id)
+            if use_mag:
+                person.attrib['id'] = f'{matplan.mag_pnum}_{matplan.mag_hhid}'
+            else:
+                person.attrib['id'] = str(matplan.person_id)
+
             plan = et.SubElement(person, 'plan')
             plan.attrib['selected'] = 'yes'
 
-            trips = et.SubElement(plan, 'act')
-            trips.attrib['type'] = matplan.events[0].purpose.name
-            self.set_loc(matplan.events[0], trips)
-            self.set_time(matplan.events[0], trips)
-
+            event_list = list()
             for value in matplan.events:
                 if isinstance(value, MatsimAct):
-                    self.act(plan, value)
+                    pair = ('act', self.act(value))
+                    pair[1]['uid'] = str(uid)
+                    event_list.append(pair)
                 elif isinstance(value, MatsimLeg):
-                    self.leg(plan, value)
+                    pair = ('leg', self.leg(value))
+                    pair[1]['uid'] = str(uid)
+                    event_list.append(pair)
                 else:
                     print(value)
-                    raise ValueError(
-                        'Each value in a plan must be either MatsimAct or MatsimLeg')
-        with open(filepath, 'wb+') as handle:
-            handle.write(et.tostring(root, pretty_print=True))
+                    raise ValueError('''Each value in a plan must 
+                                        be either MatsimAct or MatsimLeg''')
+                uid += 1
+            for event in event_list:
+                try:
+                    sub = et.SubElement(plan, event[0], attrib=event[1])
+                except TypeError:
+                    print(event[1])
+                    exit(1)
+
+        with open(filepath, 'w+') as handle:
+            handle.write(et.tostring(root, encoding=str, pretty_print=True))
