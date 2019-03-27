@@ -23,14 +23,14 @@ class MagController:
                             usecols=columns,
                             dtype=col_dtype)
         plans = plans.compute(get=dask.multiprocessing.get)
-        mask = list()
-        passenger = ['hov_passenger',
-                     'taxi',
-                     'school_bus']
+        # mask = list()
+        # passenger = ['hov_passenger',
+        #              'taxi',
+        #              'school_bus']
         # This loop filters based on w/e the agent is the driver or not
-        for row in plans.itertuples():
-            mask.append(row[self.conv.mode] not in passenger)
-        plans = plans[pd.Series(mask)]
+        # for row in plans.itertuples():
+        #     mask.append(row[self.conv.mode] not in passenger)
+        # plans = plans[pd.Series(mask)]
         return plans
 
     def plans_to_population(self, plans) -> MagPopulation:

@@ -14,6 +14,8 @@ class MatsimXml:
     def leg(self, leg: MatsimLeg) -> Dict[str, str]:
         node = dict()
         node['mode'] = leg.mode
+        node['dep_time'] = self.time_str(leg.dep_time)
+        node['trav_time'] = self.time_str(leg.trav_time)
         return node
 
     def act(self, act: MatsimAct) -> Dict[str, str]:
@@ -81,11 +83,7 @@ class MatsimXml:
                                         be either MatsimAct or MatsimLeg''')
                 uid += 1
             for event in event_list:
-                try:
-                    sub = et.SubElement(plan, event[0], attrib=event[1])
-                except TypeError:
-                    print(event[1])
-                    exit(1)
+                et.SubElement(plan, event[0], attrib=event[1])
 
         with open(filepath, 'w+') as handle:
             handle.write(et.tostring(root, encoding=str, pretty_print=True))

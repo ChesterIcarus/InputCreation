@@ -26,6 +26,8 @@ class MagAgent:
         self.trips = list()
 
     def add_trip(self, trip: List[T]):
+        trip = list(trip)
+        trip.append(self.trip_count)
         self.trips.append(tuple(trip))
         self.trip_count += 1
 
@@ -65,23 +67,18 @@ class MagHousehold:
         self.apn = apn
         self.coord = None
 
-    def agent(self, p_num) -> MagAgent:
-        try:
-            return self.agents[p_num]
-        except KeyError:
-            self.agents[p_num] = MagAgent(p_num, self.hh_num)
+    def agent(self, p_num, mag_pnum=0, mag_hhid=0) -> MagAgent:
+        self.agents[p_num] = MagAgent(p_num, self.hh_num,
+                                      mag_pnum=mag_pnum, mag_hhid=mag_hhid)
         return self.agents[p_num]
 
     def agent_exist(self, p_num, mag_pnum=0, mag_hhid=0) -> Tuple[MagAgent, bool]:
         ''' Bool flag is False if new agent created, true if agent exists'''
-        try:
+        if p_num in self.agents:
             return (self.agents[p_num], True)
-        except KeyError:
-            self.agents[p_num] = MagAgent(p_num,
-                                          self.hh_num,
-                                          mag_pnum=mag_pnum,
-                                          mag_hhid=mag_hhid)
-        return (self.agents[p_num], False)
+        else:
+            return (self.agent(p_num, mag_pnum=mag_pnum, mag_hhid=mag_hhid),
+                    False)
 
     def create_maz(self, origin_index):
         agent_origin_list = set([agent.trips[0][origin_index]
@@ -111,22 +108,16 @@ class MagPopulation:
         for row in plans.itertuples(index=False, name=None):
             pnum = row[self.conv.pnum]
             hhid = row[self.conv.hhid]
-            if hh_count in self.households:
-                if not self.households[hh_count
-                                       ].agent_exist(p_count,
-                                                     mag_pnum=pnum,
-                                                     mag_hhid=hhid):
-                    p_count += 1
-                self.households[hh_count].agents[p_count].add_trip(row)
+            if hhid in self.households:
+                self.households[hhid].agent_exist(pnum, mag_pnum=pnum,
+                                                  mag_hhid=hhid)
+                self.households[hhid].agents[pnum].add_trip(row)
             else:
-                self.households[hh_count] = MagHousehold(hh_count,
-                                                         mag_hhid=hhid)
-                self.households[hh_count].agents[p_count] = MagAgent(
-                    p_count, hh_count, mag_pnum=pnum, mag_hhid=hhid)
+                self.households[hhid] = MagHousehold(hhid, mag_hhid=hhid)
+                self.households[hhid].agents[pnum] = MagAgent(pnum, hhid,
+                                                              mag_pnum=pnum, mag_hhid=hhid)
 
-                self.households[hh_count].agents[p_count].add_trip(row)
-                hh_count += 1
-                p_count += 1
+                self.households[hhid].agents[pnum].add_trip(row)
 
         # Need to remove the sub-zero MAG errors from trips
         # after we have defined every agent
