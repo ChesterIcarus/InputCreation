@@ -44,4 +44,4 @@ class PopulationUtil:
                     trips.extend(agent.trips)
             self.db.write_rows(trips)
 
-        self.db.alter_add_composite_key(pk_fields)
+        self.db.alter_add_composite_key(composite_key)

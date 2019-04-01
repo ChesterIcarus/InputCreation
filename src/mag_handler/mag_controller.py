@@ -19,10 +19,9 @@ class MagController:
 
     def plans_by_col(self, filename, columns, col_dtype=None) -> pd.DataFrame:
         plans = dd.read_csv(filename,
-                            # chunksize=1000000,
                             usecols=columns,
                             dtype=col_dtype)
-        plans = plans.compute(get=dask.multiprocessing.get)
+        plans = plans.compute(scheduler='threads')
         # mask = list()
         # passenger = ['hov_passenger',
         #              'taxi',

@@ -79,7 +79,8 @@
                     "maz INT UNSIGNED",
                     "apn VARCHAR(10)",
                     "x DOUBLE",
-                    "y DOUBLE"
+                    "y DOUBLE",
+                    "rand_id INT UNSIGNED"
                 ],
                 "indexes": [
                     {
@@ -102,7 +103,7 @@
         "base_database": {
             "user": "root",
             "host": "localhost",
-            "db": "icarus_TEST",
+            "db": "icarus",
             "password": ""
         },
         "mag_population": {
@@ -178,7 +179,8 @@
                     "maz INT UNSIGNED",
                     "apn VARCHAR(10)",
                     "x DOUBLE",
-                    "y DOUBLE"
+                    "y DOUBLE",
+                    "rand_id INT UNSIGNED"
                 ],
                 "indexes": [
                     {

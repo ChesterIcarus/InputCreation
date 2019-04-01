@@ -14,18 +14,22 @@ class MatsimXml:
     def leg(self, leg: MatsimLeg) -> Dict[str, str]:
         node = dict()
         node['mode'] = leg.mode
-        node['dep_time'] = self.time_str(leg.dep_time)
-        node['trav_time'] = self.time_str(leg.trav_time)
-        return node
+        return self.set_leg_times(leg, node)
 
     def act(self, act: MatsimAct) -> Dict[str, str]:
         node = dict()
         node['type'] = act.purpose
         node = self.set_loc(act, node)
-        node = self.set_time(act, node)
+        node = self.set_act_time(act, node)
         return node
 
-    def set_time(self, act: MatsimAct, node: Dict[str, str]) -> Dict[str, str]:
+    def set_leg_times(self, leg: MatsimLeg, node: Dict[str, str]) -> Dict[str, str]:
+        node['dep_time'] = self.time_str(
+            abs(leg.dep_time) + (4.5 * 60))
+        node['trav_time'] = self.time_str(abs(leg.trav_time))
+        return node
+
+    def set_act_time(self, act: MatsimAct, node: Dict[str, str]) -> Dict[str, str]:
         '''0 = end_time; 1 = duration'''
         if act.end_time:
             node['end_time'] = self.time_str(

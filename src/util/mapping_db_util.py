@@ -1,6 +1,4 @@
 from typing import Dict, Tuple, List, T
-import MySQLdb as sql
-import MySQLdb.connections as connections
 from warnings import warn
 from random import randrange
 import json
@@ -26,9 +24,9 @@ class MappingDatabase(DatabaseHandle):
 
     def get_apn(self, maz: int) -> [int, str, float, float]:
         rand_id = randrange(0, self.zone_count[maz])
-        exec_str = f''' SELECT 
+        exec_str = f''' SELECT
                             maz, apn, x, y
-                        from 
+                        from
                             {self.db}.{self.table}
                         WHERE
                             maz = {maz}

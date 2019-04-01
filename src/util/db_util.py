@@ -98,7 +98,6 @@ class DatabaseHandle:
 
     def write_rows(self, data):
         s_strs = f"({(', ').join(['%s'] * len(self.columns))})"
-        # col_str = f"({(', ').join(self.columns)})"
 
         exec_str = f''' INSERT INTO {self.db}.{self.table} 
                         VALUES {s_strs} '''

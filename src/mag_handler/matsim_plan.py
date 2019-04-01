@@ -66,41 +66,36 @@ class MatsimPlan:
         for trip in trips[0:-1]:
             middle_events.extend(self.standard_event_creation(trip))
 
-        final_events = self.final_events_creation(trip)
-        self.events = tuple([*initial_act, *middle_events, *final_events])
+        final_events = self.final_events_creation(trips[-1])
+        self.events = tuple([initial_act, *middle_events, *final_events])
 
     def initial_act_creation(self, trip) -> MatsimAct:
         ''' If a MatsimAct is the first Act in a Plan,
             it has an end time but no duration. Purpose = Home. '''
-        initial_act = list()
-
         if purpose_encode[trip[self.conv.orig_type]] is 'home':
             orig_coord = self.home_coord
             orig_apn = self.home_apn
             orig_maz = self.home_maz
-
         else:
             rand_apn = self.random_apn(trip[self.conv.orig_loc])
             orig_coord = coordinate(rand_apn[2], rand_apn[3])
             orig_apn = rand_apn[1]
             orig_maz = rand_apn[0]
-
-        initial_act.append(MatsimAct(end_time=trip[self.conv.orig_end],
-                                     duration=False,
-                                     purpose=purpose_encode[0],
-                                     coord=orig_coord,
-                                     apn=orig_apn,
-                                     maz=orig_maz))
+        initial_act = MatsimAct(end_time=trip[self.conv.orig_end],
+                                duration=False,
+                                purpose=purpose_encode[0],
+                                coord=orig_coord,
+                                apn=orig_apn,
+                                maz=orig_maz)
         return initial_act
 
     def final_events_creation(self, trip) -> Tuple[MatsimLeg, MatsimAct]:
         ''' If a MatsimAct is the last Act in a Plan,
             it has no end time and no duration. Purpose = Home. '''
         final_act = list()
-        leg_time = trip[self.conv.leg_time]
         final_act.append(MatsimLeg(mode_encode[trip[self.conv.mode]],
-                                   trip[self.conv.dest_start] - leg_time,
-                                   leg_time))
+                                   trip[self.conv.orig_end],
+                                   trip[self.conv.leg_time]))
         dest = self.random_apn(trip[self.conv.dest_loc])
         final_act.append(MatsimAct(end_time=trip[self.conv.dest_dur]+trip[self.conv.dest_start],
                                    duration=trip[self.conv.dest_dur],
@@ -113,10 +108,9 @@ class MatsimPlan:
 
     def standard_event_creation(self, trip):
         ''' Give actor APNs and coordinate for trips based off MAZ/trip type'''
-        leg_time = trip[self.conv.leg_time]
         leg = MatsimLeg(mode_encode[trip[self.conv.mode]],
-                        trip[self.conv.dest_start] - leg_time,
-                        leg_time)
+                        trip[self.conv.orig_end],
+                        trip[self.conv.leg_time])
         dest = self.random_apn(trip[self.conv.dest_loc])
         act = MatsimAct(end_time=trip[self.conv.dest_start]+trip[self.conv.dest_dur],
                         duration=trip[self.conv.dest_dur],
