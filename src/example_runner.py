@@ -16,10 +16,10 @@ from mag_handler.matsim_xml_writer import MatsimXml
 from util.mapping_db_util import MappingDatabase
 
 if __name__ == '__main__':
-
-    with open('config/mag_to_matsim_config.json', 'r') as handle:
+    config_path = 'InputCreation/src/config/mag_to_matsim_config.json'
+    with open(config_path, 'r') as handle:
         config = json.load(handle)
-        params = config['FULL']
+        params = config['AWS']
 
     # We should be writing all the table to the same database
     # params['base_database']['password'] = getpass(
@@ -36,15 +36,19 @@ if __name__ == '__main__':
     mag_param = params['mag_population']
     matsim_param = params['MATsim_plans']
 
+    mag_db = mag_param['database']
+    pop_util = PopulationUtil(mag_db)
+
     mapping_create = MappingCreation()
-    mapping_no_rand_id = mapping_create.read_csv(mapping_param['source_path'],
-                                                 columns=mapping_param['database']['schema'])
+    mapping_no_rand_id = mapping_create.read_csv(
+        mapping_param['source_path'])
     mapping_data = mapping_create.process(mapping_no_rand_id)
     # set up connection to database(with username/pw if needed)
-    engine = sqlalchemy.create_engine(f"mysql+mysqldb://{mapping_param['database']['user']}" +
-                                      f":{mapping_param['database']['password']}@" +
-                                      f"{mapping_param['database']['host']}/" +
-                                      f"{mapping_param['database']['db']}")
+    engine = sqlalchemy.create_engine(
+        f"mysql+mysqldb://{mapping_param['database']['user']}" +
+        f":{mapping_param['database']['password']}@" +
+        f"{mapping_param['database']['host']}/" +
+        f"{mapping_param['database']['db']}")
     mapping_data.to_sql(mapping_param['database']['table'], engine)
 
     mapping_database = MappingDatabase(mapping_param['database'])
@@ -62,9 +66,6 @@ if __name__ == '__main__':
             # Turn the CSV plans into an encoded population
             # Allows for more specific recall of agents
             population = controller.plans_to_population(plans)
-
-            mag_db = mag_param['database']
-            pop_util = PopulationUtil(mag_db)
 
             # Create a table with the population given in the contructor
             pop_util.create_table(population=population,

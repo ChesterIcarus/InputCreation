@@ -11,9 +11,9 @@ class MappingCreation:
     def __init__(self):
         self.mappings = defaultdict(int)
 
-    def read_csv(self, filename, columns=None):
-        if columns is not None:
-            self.columns = [col.split(' ')[0] for col in columns]
+    def read_csv(self, filename):
+        # if columns is not None:
+        #     self.columns = [col.split(' ')[0] for col in columns]
         data = pd.read_csv(filename, usecols=self.columns)
         data['rand_id'] = 0
         return data

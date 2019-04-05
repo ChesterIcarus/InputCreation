@@ -97,7 +97,8 @@ class MatsimPlan:
                                    trip[self.conv.orig_end],
                                    trip[self.conv.leg_time]))
         dest = self.random_apn(trip[self.conv.dest_loc])
-        final_act.append(MatsimAct(end_time=trip[self.conv.dest_dur]+trip[self.conv.dest_start],
+        final_act.append(MatsimAct(end_time=trip[self.conv.dest_dur]+\
+                                   trip[self.conv.dest_start],
                                    duration=trip[self.conv.dest_dur],
                                    purpose=purpose_encode[trip[self.conv.dest_type]],
                                    coord=coordinate(dest[2],
@@ -112,7 +113,8 @@ class MatsimPlan:
                         trip[self.conv.orig_end],
                         trip[self.conv.leg_time])
         dest = self.random_apn(trip[self.conv.dest_loc])
-        act = MatsimAct(end_time=trip[self.conv.dest_start]+trip[self.conv.dest_dur],
+        act = MatsimAct(end_time=trip[self.conv.dest_start]+\
+                        trip[self.conv.dest_dur],
                         duration=trip[self.conv.dest_dur],
                         purpose=purpose_encode[trip[self.conv.dest_type]],
                         coord=coordinate(dest[2],
