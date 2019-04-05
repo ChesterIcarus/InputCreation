@@ -51,8 +51,10 @@ if __name__ == '__main__':
         f"{mapping_param['database']['db']}")
     mapping_data.to_sql(mapping_param['database']['table'], engine)
 
+    # Connection to the mapping db, as well as the # of APN per MAZ
     mapping_database = MappingDatabase(mapping_param['database'])
     mapping_database.load_zone_counts(params['mag_mapping']['zone_counts'])
+
     index_conversion = MagConvIndex(mag_param['indexes'])
 
     if RUN_MAG_MAT:

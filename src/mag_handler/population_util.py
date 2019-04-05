@@ -43,5 +43,4 @@ class PopulationUtil:
                 for agent in list(house.agents.values()):
                     trips.extend(agent.trips)
             self.db.write_rows(trips)
-
         self.db.alter_add_composite_key(composite_key)

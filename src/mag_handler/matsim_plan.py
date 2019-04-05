@@ -7,6 +7,7 @@ from mag_handler.encoded_data_util import MagConvIndex
 from mag_handler.mag_population import MagAgent
 from mag_handler.encoded_data_util import coordinate, mode_encode, purpose_encode
 from util.db_util import DatabaseHandle
+from util.mapping_db_util import MappingDatabase
 
 
 MatsimAct = namedtuple('MatsimAct', ['end_time',
@@ -31,11 +32,11 @@ class MatsimPlan:
     home_maz: int
     home_apn: str
     home_coord: coordinate
-    mapping_db: DatabaseHandle = None
+    mapping_db: MappingDatabase = None
     conv: MagConvIndex
     events: Tuple[T, ...]
 
-    def __init__(self, agent: MagAgent, mapping_database: DatabaseHandle):
+    def __init__(self, agent: MagAgent, mapping_database: MappingDatabase):
         self.mapping_db = mapping_database
         self.person_id = agent.p_num
         self.mag_pnum = agent.mag_pnum

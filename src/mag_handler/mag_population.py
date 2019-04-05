@@ -102,9 +102,6 @@ class MagPopulation:
 
     def define_agents(self, plans: pd.DataFrame, count=False):
         # TODO: Investigate using dask for speedup on this as well
-        hh_count = 0
-        p_count = 0
-
         for row in plans.itertuples(index=False, name=None):
             pnum = row[self.conv.pnum]
             hhid = row[self.conv.hhid]
@@ -115,8 +112,8 @@ class MagPopulation:
             else:
                 self.households[hhid] = MagHousehold(hhid, mag_hhid=hhid)
                 self.households[hhid].agents[pnum] = MagAgent(pnum, hhid,
-                                                              mag_pnum=pnum, mag_hhid=hhid)
-
+                                                              mag_pnum=pnum,
+                                                              mag_hhid=hhid)
                 self.households[hhid].agents[pnum].add_trip(row)
 
         # Need to remove the sub-zero MAG errors from trips
@@ -128,6 +125,3 @@ class MagPopulation:
             for agent in list(household.agents.values()):
                 agent.clean_trips(self.conv)
                 agent.home_maz = household.maz
-
-        if count:
-            return {'agent': p_count, 'household': hh_count}
