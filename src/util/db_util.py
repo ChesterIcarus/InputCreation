@@ -34,7 +34,7 @@ class DatabaseHandle:
                                          db='mysql', host=params['host'])
                 cursor = connection.cursor()
                 cursor.execute(f'CREATE DATABASE {params["db"]}')
-                cursor.commit()
+                connection.commit()
                 cursor.close()
                 connection.close()
                 self.connection = sql.connect(user=params['user'],
@@ -70,19 +70,19 @@ class DatabaseHandle:
             self.columns = [column.split(' ')[0] for column in schema]
             self.schema = schema
         sql_schema = f"({(', ').join(self.schema)})"
-        exec_str = f''' DROP TABLE IF EXISTS 
+        exec_str = f''' DROP TABLE IF EXISTS
                             {self.db}.{self.table}'''
         self.cursor.execute(exec_str)
         self.connection.commit()
-        exec_str = f''' CREATE TABLE 
-                            {self.db}.{self.table} 
+        exec_str = f''' CREATE TABLE
+                            {self.db}.{self.table}
                         {sql_schema}'''
         self.cursor.execute(exec_str)
         self.connection.commit()
 
     def create_index(self, index_name, index_columns):
         formed_index_cols = (', ').join(index_columns)
-        exec_str = f'''CREATE INDEX 
+        exec_str = f'''CREATE INDEX
                             {index_name}
                         ON {self.db}.{self.table}
                             ({formed_index_cols})'''
@@ -99,7 +99,7 @@ class DatabaseHandle:
     def write_rows(self, data):
         s_strs = f"({(', ').join(['%s'] * len(self.columns))})"
 
-        exec_str = f''' INSERT INTO {self.db}.{self.table} 
+        exec_str = f''' INSERT INTO {self.db}.{self.table}
                         VALUES {s_strs} '''
         self.cursor.executemany(exec_str, data)
         self.connection.commit()

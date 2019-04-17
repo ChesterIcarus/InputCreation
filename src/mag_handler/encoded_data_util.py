@@ -5,11 +5,13 @@ from collections import namedtuple
 
 mode_encode = {
     0: 'car', 1: 'sov', 2: 'hov2_driver', 3: 'hov3_driver',
-    4: 'car', 5: 'conv_transit_walk_access', 6: 'conv_transit_knr',
+    4: 'hov_passenger', 5: 'conv_transit_walk_access', 6: 'conv_transit_knr',
     7: 'conv_transit_pnr', 8: 'prem_transit_walk_access',
     9: 'prem_transit_knr', 10: 'prem_transit_pnr', 11: 'walk',
-    12: 'bike', 13: 'car', 14: 'car'
+    12: 'bike', 13: 'taxi', 14: 'school_bus'
 }
+reverse_mode_encode = {val: key for key, val in mode_encode.items()}
+
 purpose_encode = {
     0: 'home',
     1: 'work',
@@ -30,6 +32,7 @@ purpose_encode = {
     10: 'special_event',
     15: 'work_related'
 }
+reverse_purp_encode = {val: key for key, val in purpose_encode.items()}
 
 coordinate = namedtuple('coordinate', ['x', 'y'])
 
@@ -40,7 +43,7 @@ class MagConvIndex:
     orig_loc: int
     orig_end: int
     orig_type: int
-    mode_encode: int
+    mode: int
     dest_loc: int
     dest_start: int
     dest_type: int
@@ -48,17 +51,17 @@ class MagConvIndex:
     leg_time: int
 
     def __init__(self, mag_indexes: Dict[str, int]):
-        self.pnum = mag_indexes['pnum']
-        self.hhid = mag_indexes['hhid']
-        self.orig_loc = mag_indexes['origMaz']
-        self.orig_end = mag_indexes['finalDepartMinute']
-        self.orig_type = mag_indexes['origPurp']
-        self.mode = mag_indexes['mode']
-        self.dest_loc = mag_indexes['destMaz']
-        self.dest_start = mag_indexes['finalArriveMinute']
-        self.dest_type = mag_indexes['destPurp']
-        self.dest_dur = mag_indexes['activityMinutesAtDest']
-        self.leg_time = mag_indexes['finalTravelMinutes']
+        MagConvIndex.pnum = mag_indexes['pnum']
+        MagConvIndex.hhid = mag_indexes['hhid']
+        MagConvIndex.orig_loc = mag_indexes['origMaz']
+        MagConvIndex.orig_end = mag_indexes['finalDepartMinute']
+        MagConvIndex.orig_type = mag_indexes['origPurp']
+        MagConvIndex.mode = mag_indexes['mode']
+        MagConvIndex.dest_loc = mag_indexes['destMaz']
+        MagConvIndex.dest_start = mag_indexes['finalArriveMinute']
+        MagConvIndex.dest_type = mag_indexes['destPurp']
+        MagConvIndex.dest_dur = mag_indexes['activityMinutesAtDest']
+        MagConvIndex.leg_time = mag_indexes['finalTravelMinutes']
 
 
 # class Coordinate:

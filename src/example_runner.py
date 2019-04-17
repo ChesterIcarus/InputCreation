@@ -22,8 +22,8 @@ if __name__ == '__main__':
         params = config['AWS']
 
     # We should be writing all the table to the same database
-    # params['base_database']['password'] = getpass(
-    #     f'Password for {params["base_database"]["user"]}: ')
+    params['base_database']['password'] = getpass(
+         f'Password for {params["base_database"]["user"]}: ')
     for db in [params['mag_population']['database'],
                params['mag_mapping']['database']]:
         for key, value in list(params['base_database'].items()):
@@ -39,21 +39,23 @@ if __name__ == '__main__':
     mag_db = mag_param['database']
     pop_util = PopulationUtil(mag_db)
 
-    mapping_create = MappingCreation()
-    mapping_no_rand_id = mapping_create.read_csv(
-        mapping_param['source_path'])
-    mapping_data = mapping_create.process(mapping_no_rand_id)
+    # mapping_create = MappingCreation()
+    # mapping_no_rand_id = mapping_create.read_csv(
+    #     mapping_param['source_path'])
+    # mapping_data = mapping_create.process(mapping_no_rand_id)
     # set up connection to database(with username/pw if needed)
-    engine = sqlalchemy.create_engine(
-        f"mysql+mysqldb://{mapping_param['database']['user']}" +
-        f":{mapping_param['database']['password']}@" +
-        f"{mapping_param['database']['host']}/" +
-        f"{mapping_param['database']['db']}")
-    mapping_data.to_sql(mapping_param['database']['table'], engine)
+    # engine = sqlalchemy.create_engine(
+    #     f"mssql+pyodbc://{mapping_param['database']['user']}" +
+    #     f":{mapping_param['database']['password']}@" +
+    #     f"{mapping_param['database']['host']}/" +
+    #     f"{mapping_param['database']['db']}",
+    #     fast_executemany=True)
+    # mapping_data.to_sql(mapping_param['database']['table'], engine)
 
     # Connection to the mapping db, as well as the # of APN per MAZ
-    mapping_database = MappingDatabase(mapping_param['database'])
-    mapping_database.load_zone_counts(params['mag_mapping']['zone_counts'])
+    # mapping_database = MappingDatabase(mapping_param['database'])
+    # mapping_database.load_zone_counts(params['mag_mapping']['zone_counts'])
+    mapping_dataframe = pd.read_csv(mapping_param['source_path'])
 
     index_conversion = MagConvIndex(mag_param['indexes'])
 
@@ -86,8 +88,10 @@ if __name__ == '__main__':
                 print(f'''Successfully loaded population from:
                             {mag_param["pickle_path"]}''')
 
-        mag_to_mat = MagToMatsim(conv=index_conversion)
-        matsim = mag_to_mat.convert(population, mapping_database)
+        mag_to_mat = MagToMatsim(conv=index_conversion, mapping_database,
+                                 mapping_dataframe=mapping_dataframe)
+        # matsim = mag_to_mat.from_pyobj(population)
+        matsim = mag_to_mat.from_df(population)
 
         with open(matsim_param['pickle_path'], 'wb+') as handle:
             dill.dump(matsim, handle)

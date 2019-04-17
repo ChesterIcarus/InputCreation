@@ -1,8 +1,9 @@
 from typing import List, Dict, T
-from lxml import etree as et
+from xml.etree import ElementTree as et
 from math import floor
+import csv
 
-from mag_handler.matsim_plan import MatsimPlan, MatsimAct, MatsimLeg
+from mag_handler.fast.matsim_plan import FastMatsimPlan, MatsimAct, MatsimLeg
 from mag_handler.encoded_data_util import purpose_encode, mode_encode
 
 
@@ -20,8 +21,7 @@ class MatsimXml:
         node = dict()
         node['type'] = act.purpose
         node = self.set_loc(act, node)
-        node = self.set_act_time(act, node)
-        return node
+        return self.set_act_time(act, node)
 
     def set_leg_times(self, leg: MatsimLeg, node: Dict[str, str]) -> Dict[str, str]:
         node['dep_time'] = self.time_str(
@@ -39,8 +39,8 @@ class MatsimXml:
         return node
 
     def set_loc(self, act: MatsimAct, node: Dict[str, str]) -> Dict[str, str]:
-        node['maz'] = str(act.maz)
-        node['apn'] = str(act.apn)
+        # node['maz'] = str(act.maz)
+        # node['apn'] = str(act.apn)
         node['x'] = str(act.coord.x)
         node['y'] = str(act.coord.y)
         return node
@@ -57,16 +57,20 @@ class MatsimXml:
             second = f'0{second}'
         return f'{hour}:{minute}:{second}'
 
-    def write(self, plans: List[MatsimPlan], filepath: str, use_mag=True):
+    def write(self, plans: List[FastMatsimPlan], filepath: str, use_mag=True):
         root = et.Element('population')
-        matplan: MatsimPlan
+        tree = et.ElementTree(root)
+        matplan: FastMatsimPlan
         uid = 0
+        pid = 0
+        pid_list = list()
         for matplan in plans:
             person = et.SubElement(root, 'person')
-            if use_mag:
-                person.attrib['id'] = f'{matplan.mag_pnum}_{matplan.mag_hhid}'
-            else:
-                person.attrib['id'] = str(matplan.person_id)
+            person.attrib['id'] = str(pid)
+            pid += 1
+            pid_list.append((matplan.pnum, matplan.hhid))
+            # person.attrib['pnum'] = str(matplan.pnum)
+            # person.attrib['hhid'] = str(matplan.hhid)
 
             plan = et.SubElement(person, 'plan')
             plan.attrib['selected'] = 'yes'
@@ -75,19 +79,25 @@ class MatsimXml:
             for value in matplan.events:
                 if isinstance(value, MatsimAct):
                     pair = ('act', self.act(value))
-                    pair[1]['uid'] = str(uid)
+                    # pair[1]['uid'] = str(uid)
                     event_list.append(pair)
                 elif isinstance(value, MatsimLeg):
                     pair = ('leg', self.leg(value))
-                    pair[1]['uid'] = str(uid)
+                    # pair[1]['uid'] = str(uid)
                     event_list.append(pair)
                 else:
                     print(value)
-                    raise ValueError('''Each value in a plan must 
+                    raise ValueError('''Each value in a plan must
                                         be either MatsimAct or MatsimLeg''')
                 uid += 1
             for event in event_list:
                 et.SubElement(plan, event[0], attrib=event[1])
 
-        with open(filepath, 'w+') as handle:
-            handle.write(et.tostring(root, encoding=str, pretty_print=True))
+        tree.write(filepath)
+        # with open(filepath, 'w+') as handle:
+            # handle.write(et.tostring(root, encoding=str, pretty_print=True))
+        with open(filepath.split('.xml')[0] + '.csv', 'w+') as handle:
+            writer = csv.writer(handle)
+            writer.writerows(pid_list)
+
+

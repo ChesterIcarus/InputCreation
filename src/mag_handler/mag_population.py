@@ -31,12 +31,12 @@ class MagAgent:
         self.trips.append(tuple(trip))
         self.trip_count += 1
 
-    def clean_trips(self, conv: MagConvIndex):
+    def clean_trips(self):
         keys = [
-            conv.orig_end,
-            conv.dest_start,
-            conv.dest_dur,
-            conv.leg_time
+            MagConvIndex.orig_end,
+            MagConvIndex.dest_start,
+            MagConvIndex.dest_dur,
+            MagConvIndex.leg_time
         ]
         for index, value in enumerate(self.trips):
             trip = list(value)
@@ -93,18 +93,16 @@ class MagHousehold:
 class MagPopulation:
     proportion: int
     households: Dict[int, MagHousehold]
-    conv: MagConvIndex
 
-    def __init__(self, conv: MagConvIndex, proportion=1.0):
+    def __init__(self, proportion=1.0):
         self.proportion = proportion
         self.households = dict()
-        self.conv = conv
 
     def define_agents(self, plans: pd.DataFrame, count=False):
         # TODO: Investigate using dask for speedup on this as well
         for row in plans.itertuples(index=False, name=None):
-            pnum = row[self.conv.pnum]
-            hhid = row[self.conv.hhid]
+            pnum = row[MagConvIndex.pnum]
+            hhid = row[MagConvIndex.hhid]
             if hhid in self.households:
                 self.households[hhid].agent_exist(pnum, mag_pnum=pnum,
                                                   mag_hhid=hhid)
@@ -120,8 +118,8 @@ class MagPopulation:
         # after we have defined every agent
         household: MagHousehold
         for household in list(self.households.values()):
-            household.create_maz(self.conv.orig_loc)
+            household.create_maz(MagConvIndex.orig_loc)
             agent: MagAgent
             for agent in list(household.agents.values()):
-                agent.clean_trips(self.conv)
+                agent.clean_trips()
                 agent.home_maz = household.maz

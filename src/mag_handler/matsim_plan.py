@@ -27,20 +27,18 @@ class MatsimPlan:
         Agent must have all properties, and mapping must include agents MAZ.
         Mapping must be a 4-column Df with: [maz, apn, x, y] '''
     person_id: int
-    mag_pnum: int
-    mag_hhid: int
+    pnum: int
+    hhid: int
     home_maz: int
     home_apn: str
     home_coord: coordinate
-    mapping_db: MappingDatabase = None
-    conv: MagConvIndex
+    mapping_db: MappingDatabase
     events: Tuple[T, ...]
 
-    def __init__(self, agent: MagAgent, mapping_database: MappingDatabase):
-        self.mapping_db = mapping_database
+    def __init__(self, agent: MagAgent):
         self.person_id = agent.p_num
-        self.mag_pnum = agent.mag_pnum
-        self.mag_hhid = agent.mag_hhid
+        self.pnum = agent.mag_pnum
+        self.hhid = agent.mag_hhid
         home = self.random_apn(agent.home_maz)
         self.home_maz = home[0]
         self.home_apn = home[1]
@@ -73,16 +71,16 @@ class MatsimPlan:
     def initial_act_creation(self, trip) -> MatsimAct:
         ''' If a MatsimAct is the first Act in a Plan,
             it has an end time but no duration. Purpose = Home. '''
-        if purpose_encode[trip[self.conv.orig_type]] is 'home':
+        if purpose_encode[trip[MagConvIndex.orig_type]] is 'home':
             orig_coord = self.home_coord
             orig_apn = self.home_apn
             orig_maz = self.home_maz
         else:
-            rand_apn = self.random_apn(trip[self.conv.orig_loc])
+            rand_apn = self.random_apn(trip[MagConvIndex.orig_loc])
             orig_coord = coordinate(rand_apn[2], rand_apn[3])
             orig_apn = rand_apn[1]
             orig_maz = rand_apn[0]
-        initial_act = MatsimAct(end_time=trip[self.conv.orig_end],
+        initial_act = MatsimAct(end_time=trip[MagConvIndex.orig_end],
                                 duration=False,
                                 purpose=purpose_encode[0],
                                 coord=orig_coord,
@@ -94,14 +92,14 @@ class MatsimPlan:
         ''' If a MatsimAct is the last Act in a Plan,
             it has no end time and no duration. Purpose = Home. '''
         final_act = list()
-        final_act.append(MatsimLeg(mode_encode[trip[self.conv.mode]],
-                                   trip[self.conv.orig_end],
-                                   trip[self.conv.leg_time]))
-        dest = self.random_apn(trip[self.conv.dest_loc])
-        final_act.append(MatsimAct(end_time=trip[self.conv.dest_dur]+\
-                                   trip[self.conv.dest_start],
-                                   duration=trip[self.conv.dest_dur],
-                                   purpose=purpose_encode[trip[self.conv.dest_type]],
+        final_act.append(MatsimLeg(mode_encode[trip[MagConvIndex.mode]],
+                                   trip[MagConvIndex.orig_end],
+                                   trip[MagConvIndex.leg_time]))
+        dest = self.random_apn(trip[MagConvIndex.dest_loc])
+        final_act.append(MatsimAct(end_time=trip[MagConvIndex.dest_dur]+\
+                                   trip[MagConvIndex.dest_start],
+                                   duration=trip[MagConvIndex.dest_dur],
+                                   purpose=purpose_encode[trip[MagConvIndex.dest_type]],
                                    coord=coordinate(dest[2],
                                                     dest[3]),
                                    apn=dest[1],
@@ -110,14 +108,14 @@ class MatsimPlan:
 
     def standard_event_creation(self, trip):
         ''' Give actor APNs and coordinate for trips based off MAZ/trip type'''
-        leg = MatsimLeg(mode_encode[trip[self.conv.mode]],
-                        trip[self.conv.orig_end],
-                        trip[self.conv.leg_time])
-        dest = self.random_apn(trip[self.conv.dest_loc])
-        act = MatsimAct(end_time=trip[self.conv.dest_start]+\
-                        trip[self.conv.dest_dur],
-                        duration=trip[self.conv.dest_dur],
-                        purpose=purpose_encode[trip[self.conv.dest_type]],
+        leg = MatsimLeg(mode_encode[trip[MagConvIndex.mode]],
+                        trip[MagConvIndex.orig_end],
+                        trip[MagConvIndex.leg_time])
+        dest = self.random_apn(trip[MagConvIndex.dest_loc])
+        act = MatsimAct(end_time=trip[MagConvIndex.dest_start]+\
+                        trip[MagConvIndex.dest_dur],
+                        duration=trip[MagConvIndex.dest_dur],
+                        purpose=purpose_encode[trip[MagConvIndex.dest_type]],
                         coord=coordinate(dest[2],
                                          dest[3]),
                         apn=dest[1],
@@ -133,4 +131,3 @@ class MatsimPlan:
             self.multiple(agent.get_trips())
         else:
             raise ValueError('Agents must have at least one valid Trip')
-        self.mapping_db = None
