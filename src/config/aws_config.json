@@ -1,0 +1,103 @@
+{
+    "full": {
+        "base_database": {
+            "user": "root",
+            "host": "localhost",
+            "db": "icarus",
+            "password": ""
+        },
+        "mag_population": {
+            "source_path": "data/raw_travel_data/output_disaggTripList.csv",
+            "column_ids": [
+                "hhid",
+                "pnum",
+                "origMaz",
+                "destMaz",
+                "origPurp",
+                "destPurp",
+                "mode",
+                "finalDepartMinute",
+                "tripDistance",
+                "finalTravelMinutes",
+                "finalArriveMinute",
+                "activityMinutesAtDest",
+                "pnrParkMaz"
+            ],
+            "indexes": {
+                "hhid": 0,
+                "pnum": 1,
+                "origMaz": 2,
+                "destMaz": 3,
+                "origPurp": 4,
+                "destPurp": 5,
+                "mode": 6,
+                "finalDepartMinute": 7,
+                "tripDistance": 8,
+                "finalTravelMinutes": 9,
+                "finalArriveMinute": 10,
+                "activityMinutesAtDest": 11,
+                "pnrParkMaz": 12
+            },
+            "pickle_path": "data/processed_MAG_data/full_cleaned_mag_pop.pickle",
+            "database": {
+                "user": "",
+                "host": "",
+                "db": "",
+                "password": "",
+                "table": "trip_no_route",
+                "schema": [
+                    "hh_num INT UNSIGNED",
+                    "p_num INT UNSIGNED",
+                    "orig_maz INT UNSIGNED",
+                    "dest_maz INT UNSIGNED",
+                    "orig_purp INT UNSIGNED",
+                    "dest_purp INT UNSIGNED",
+                    "mode INT UNSIGNED",
+                    "depart_min DOUBLE",
+                    "trip_dist DOUBLE",
+                    "travel_min DOUBLE",
+                    "arrival_min DOUBLE",
+                    "time_at_dest DOUBLE",
+                    "pnr_park_maz INT UNSIGNED",
+                    "trip_num INT UNSIGNED"
+                ],
+                "composite_key": [
+                    "hh_num",
+                    "p_num",
+                    "trip_num"
+                ]
+            }
+        },
+        "mag_mapping": {
+            "database": {
+                "user": "",
+                "host": "",
+                "db": "",
+                "password": "",
+                "table": "apn_maz_mapping",
+                "schema": [
+                    "maz INT UNSIGNED",
+                    "apn VARCHAR(10)",
+                    "x DOUBLE",
+                    "y DOUBLE",
+                    "rand_id INT UNSIGNED"
+                ],
+                "indexes": [
+                    {
+                        "name": "maz_index",
+                        "columns": [
+                            "maz"
+                        ]
+                    }
+                ]
+            },
+            "source_path": "data/processed_MAG_data/parcel_by_maz.csv",
+            "zone_counts": "data/processed_MAG_data/zone_counts.json",
+            "fast_map_source": "data/processed_MAG_data/fast_map.pickle"
+        },
+        "MATsim_plans": {
+            "xml_path": "data/MATSim_input/full_matsim_plans_from_mag.xml",
+            "pickle_path": "data/processed_MAG_data/full_matsim_plans.pickle"
+        }
+    }
+}
