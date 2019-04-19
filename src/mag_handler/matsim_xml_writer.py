@@ -58,7 +58,7 @@ class MatsimXml:
         return f'{hour}:{minute}:{second}'
 
     def write(self, plans: List[FastMatsimPlan], filepath: str, use_mag=True):
-        root = et.Element('population')
+        root = et.Element('plans')
         tree = et.ElementTree(root)
         matplan: FastMatsimPlan
         uid = 0
@@ -94,8 +94,6 @@ class MatsimXml:
                 et.SubElement(plan, event[0], attrib=event[1])
 
         tree.write(filepath)
-        # with open(filepath, 'w+') as handle:
-            # handle.write(et.tostring(root, encoding=str, pretty_print=True))
         with open(filepath.split('.xml')[0] + '.csv', 'w+') as handle:
             writer = csv.writer(handle)
             writer.writerows(pid_list)

@@ -24,10 +24,12 @@ class MagController:
                             dtype=col_dtype)
         plans = plans.compute(scheduler='threading')
         # This loop filters based on whether the agent is the driver or not
-        passenger = [reverse_mode_encode['hov_passenger'],
-                     reverse_mode_encode['taxi'],
-                     reverse_mode_encode['school_bus']]
-        plans = plans[~plans['mode'].isin(passenger)]
+        # passenger = [reverse_mode_encode['hov_passenger'],
+        #              reverse_mode_encode['taxi'],
+        #              reverse_mode_encode['school_bus']]
+        only_cars = [0, 1, 2, 3]
+        plans = plans[plans['mode'].isin(only_cars)]
+        plans['mode'] = 0
         plans.sort_values(by='hhid', inplace=True)
         return plans
 
