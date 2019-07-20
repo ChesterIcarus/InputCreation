@@ -13,10 +13,9 @@ params = {'user': 'root', 'password': None,
            }
           }
 
-params['password'] = getpass()
-if (len(argv) == 0):
-    raise ValueError('Must enter file in command line argument')
+params['password'] = getpass() 
 db = DatabaseHandle(params)
 db.create_table('parcelMaz')
 parcel_gen = ParcelDbGen(db)
-parcel_gen.read_input('../../data/mag_to_matsim_required_aux/full_maricop_parcel_coord_by_MAZ.json')
+# parcel_gen.read_input('../../data/mag_to_matsim_required_aux/full_maricop_parcel_coord_by_MAZ.json')
+parcel_gen.read_input('test.json')
