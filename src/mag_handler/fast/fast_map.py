@@ -24,6 +24,7 @@ class FastMap:
                 return
 
     def load(self, filepath):
+        ''' Load an existing FastMap from a pickle object '''
         try:
             with open(filepath, 'rb') as handle:
                     self.data = dill.load(handle)
@@ -32,6 +33,8 @@ class FastMap:
             return False
 
     def create(self, mapping_filepath):
+        ''' Creates a mapping of the MAZ to each APN in the MAZ,
+        along with the (x, y) coords, and an ID used for randomization '''
         mapping = pd.read_csv(mapping_filepath)
         uniques = mapping['maz'].unique()
         fast_map = {k: (mapping[mapping['maz'] == k].iloc[:, 1:4].itertuples(

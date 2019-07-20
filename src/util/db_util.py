@@ -1,45 +1,41 @@
-from typing import Dict, Tuple, List, T
+from typing import List, Dict, Tuple
+from warnings import warn
 import MySQLdb as sql
 import MySQLdb.connections as connections
-from warnings import warn
 
 
 class DatabaseHandle:
     connection = connections.Connection
     cursor = connections.cursors.Cursor
-    user = None
-    host = None
-    db = None
-    schema = None
-    table = None
+    user: str = None
+    host: str = None
+    db: str = None
+    tables: Dict[str, Dict] = None
 
     def __init__(self, params: Dict[str, str] = None, handle=None):
         if type(handle) is DatabaseHandle:
             self = handle
 
-        if isinstance(params, dict):
+        elif isinstance(params, dict):
+            keys = ('user', 'password', 'db', 'host', 'unix_socket')
+            login = {key:params[key] for key in keys if key in params}
             try:
-                self.connection = sql.connect(user=params['user'],
-                                              password=params['password'],
-                                              db=params['db'], host=params['host'])
+                self.connection = sql.connect(**login)
                 self.cursor = self.connection.cursor()
                 self.user = params['user']
                 self.host = params['host']
-                self.db = params['db']
-            except sql._exceptions.DatabaseError:
+                if 'db' in params:
+                    self.db = params['db']
+            except Exception as ex:
                 # Creating the database that didn't exist, if that was the error above
                 connection: sql.connections.Connection
-                connection = sql.connect(user=params['user'],
-                                         password=params['password'],
-                                         db='mysql', host=params['host'])
+                connection = sql.connect(**login)
                 cursor = connection.cursor()
                 cursor.execute(f'CREATE DATABASE {params["db"]}')
                 connection.commit()
                 cursor.close()
                 connection.close()
-                self.connection = sql.connect(user=params['user'],
-                                              password=params['password'],
-                                              db=params['db'], host=params['host'])
+                self.connection = sql.connect(**login)
                 self.cursor = self.connection.cursor()
                 self.user = params['user']
                 self.host = params['host']
@@ -52,54 +48,54 @@ class DatabaseHandle:
             self.cursor = None
             self.connection = None
             warn('No valid database passed, DatabaseHandle initialized without connection')
-        if 'table' in params:
-            self.table = params['table']
+        if 'tables' in params:
+            self.tables = params['tables']
         else:
-            self.table = None
-        if 'schema' in params:
-            self.schema = params['schema']
-            self.columns = [column.split(' ')[0]
-                            for column in params['schema']]
-        else:
-            self.columns = None
+            self.tables = None
 
-    def create_table(self, table=None, schema=None):
-        if table is not None:
-            self.table = table
-        if schema is not None:
-            self.columns = [column.split(' ')[0] for column in schema]
-            self.schema = schema
-        sql_schema = f"({(', ').join(self.schema)})"
-        exec_str = f''' DROP TABLE IF EXISTS
-                            {self.db}.{self.table}'''
+    def create_table(self, table, silent=False):
+        table_data = self.tables[table]
+        if not silent:
+            print(table_data)
+        sql_schema = (', ').join(table_data['schema'])
+        exec_str = f'''DROP TABLE IF EXISTS {self.db}.{table}'''
         self.cursor.execute(exec_str)
         self.connection.commit()
-        exec_str = f''' CREATE TABLE
-                            {self.db}.{self.table}
-                        {sql_schema}'''
+        exec_str = f'''CREATE TABLE {self.db}.{table} ({sql_schema})'''
+        if not silent:
+            print(exec_str)
         self.cursor.execute(exec_str)
         self.connection.commit()
 
-    def create_index(self, index_name, index_columns):
-        formed_index_cols = (', ').join(index_columns)
+    def create_index(self, table, name):
+        columns = (', ').join(self.tables[table]['indexes'][name])
         exec_str = f'''CREATE INDEX
-                            {index_name}
-                        ON {self.db}.{self.table}
-                            ({formed_index_cols})'''
+                            {name}
+                        ON {self.db}.{table}
+                            ({columns})'''
         self.cursor.execute(exec_str)
         self.connection.commit()
 
-    def alter_add_composite_key(self, fields):
-        formed_index_cols = (', ').join(fields)
-        exec_str = f'''ALTER TABLE {self.db}.{self.table}
+    def alter_add_composite_PK(self, table, name):
+        formed_index_cols = (', ').join(self.tables[table]['comp_PK'])
+        exec_str = f'''ALTER TABLE {self.db}.{table}
                         ADD PRIMARY KEY ({formed_index_cols})'''
         self.cursor.execute(exec_str)
         self.connection.commit()
 
-    def write_rows(self, data):
-        s_strs = f"({(', ').join(['%s'] * len(self.columns))})"
+    def write_rows(self, data, table):
+        s_strs = f"({', '.join(['%s'] * len(self.tables[table]['schema']))})"
 
-        exec_str = f''' INSERT INTO {self.db}.{self.table}
+        exec_str = f''' INSERT INTO {self.db}.{table}
                         VALUES {s_strs} '''
+        self.cursor.executemany(exec_str, data)
+        self.connection.commit()
+
+    def write_geom_rows(self, data, table):
+        s_strs = f"""{', '.join(
+            ['%s'] * (len(self.tables[table]['schema']) - 1))}"""
+        s_strs += ', ST_GeomFromText(%s)'
+        exec_str = f''' INSERT INTO {self.db}.{table}
+                        VALUES ({s_strs}) '''
         self.cursor.executemany(exec_str, data)
         self.connection.commit()

@@ -1,0 +1,188 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+DatabaseHandle	../src/database_make.py	/^from util.db_util import DatabaseHandle$/;"	kind:namespace	line:5
+DatabaseHandle	../src/mag_handler/population_util.py	/^from util.db_util import DatabaseHandle$/;"	kind:namespace	line:7
+DatabaseHandle	../src/util/db_util.py	/^class DatabaseHandle:$/;"	kind:class	line:7
+Dict	../src/mag_handler/encoded_data_util.py	/^from typing import Dict$/;"	kind:namespace	line:2
+Dict	../src/mag_handler/mag_controller.py	/^from typing import List, Dict, Tuple$/;"	kind:namespace	line:3
+Dict	../src/mag_handler/mag_population.py	/^from typing import Dict, List, Tuple, T$/;"	kind:namespace	line:4
+Dict	../src/mag_handler/mag_to_matsim.py	/^from typing import Dict, List, Tuple, T$/;"	kind:namespace	line:4
+Dict	../src/mag_handler/matsim_plan.py	/^from typing import Dict, List, Tuple, T$/;"	kind:namespace	line:1
+Dict	../src/mag_handler/population_util.py	/^from typing import List, Dict, Tuple, T$/;"	kind:namespace	line:3
+Enum	../src/mag_handler/encoded_data_util.py	/^from enum import Enum$/;"	kind:namespace	line:1
+List	../src/mag_handler/mag_controller.py	/^from typing import List, Dict, Tuple$/;"	kind:namespace	line:3
+List	../src/mag_handler/mag_population.py	/^from typing import Dict, List, Tuple, T$/;"	kind:namespace	line:4
+List	../src/mag_handler/mag_to_matsim.py	/^from typing import Dict, List, Tuple, T$/;"	kind:namespace	line:4
+List	../src/mag_handler/matsim_plan.py	/^from typing import Dict, List, Tuple, T$/;"	kind:namespace	line:1
+List	../src/mag_handler/matsim_xml_writer.py	/^from typing import List, T$/;"	kind:namespace	line:1
+List	../src/mag_handler/population_util.py	/^from typing import List, Dict, Tuple, T$/;"	kind:namespace	line:3
+MagAgent	../src/mag_handler/mag_population.py	/^class MagAgent:$/;"	kind:class	line:10
+MagAgent	../src/mag_handler/mag_to_matsim.py	/^from mag_handler.mag_population import MagPopulation, MagHousehold, MagAgent$/;"	kind:namespace	line:6
+MagAgent	../src/mag_handler/matsim_plan.py	/^from mag_handler.mag_population import MagAgent$/;"	kind:namespace	line:4
+MagAgent	../src/mag_handler/population_util.py	/^from mag_handler.mag_population import MagAgent, MagHousehold, MagPopulation$/;"	kind:namespace	line:6
+MagController	../src/example_runner.py	/^from mag_handler.mag_controller import MagController$/;"	kind:namespace	line:4
+MagController	../src/mag_handler/mag_controller.py	/^class MagController:$/;"	kind:class	line:11
+MagConvIndex	../src/mag_handler/encoded_data_util.py	/^class MagConvIndex:$/;"	kind:class	line:5
+MagConvIndex	../src/mag_handler/mag_controller.py	/^from mag_handler.encoded_data_util import Purpose, Mode, MagConvIndex$/;"	kind:namespace	line:5
+MagConvIndex	../src/mag_handler/mag_population.py	/^from mag_handler.encoded_data_util import MagConvIndex$/;"	kind:namespace	line:7
+MagConvIndex	../src/mag_handler/mag_to_matsim.py	/^from mag_handler.encoded_data_util import MagConvIndex$/;"	kind:namespace	line:8
+MagConvIndex	../src/mag_handler/matsim_plan.py	/^from mag_handler.encoded_data_util import MagConvIndex$/;"	kind:namespace	line:3
+MagHousehold	../src/mag_handler/mag_population.py	/^class MagHousehold:$/;"	kind:class	line:36
+MagHousehold	../src/mag_handler/mag_to_matsim.py	/^from mag_handler.mag_population import MagPopulation, MagHousehold, MagAgent$/;"	kind:namespace	line:6
+MagHousehold	../src/mag_handler/population_util.py	/^from mag_handler.mag_population import MagAgent, MagHousehold, MagPopulation$/;"	kind:namespace	line:6
+MagPopulation	../src/mag_handler/mag_controller.py	/^from mag_handler.mag_population import MagPopulation$/;"	kind:namespace	line:6
+MagPopulation	../src/mag_handler/mag_population.py	/^class MagPopulation:$/;"	kind:class	line:63
+MagPopulation	../src/mag_handler/mag_to_matsim.py	/^from mag_handler.mag_population import MagPopulation, MagHousehold, MagAgent$/;"	kind:namespace	line:6
+MagPopulation	../src/mag_handler/population_util.py	/^from mag_handler.mag_population import MagAgent, MagHousehold, MagPopulation$/;"	kind:namespace	line:6
+MagToMatsim	../src/mag_handler/mag_controller.py	/^from mag_handler.mag_to_matsim import MagToMatsim$/;"	kind:namespace	line:7
+MagToMatsim	../src/mag_handler/mag_to_matsim.py	/^class MagToMatsim:$/;"	kind:class	line:11
+MatsimAct	../src/example_runner.py	/^from mag_handler.matsim_plan import MatsimAct, MatsimLeg$/;"	kind:namespace	line:5
+MatsimAct	../src/mag_handler/matsim_plan.py	/^class MatsimAct:$/;"	kind:class	line:7
+MatsimAct	../src/mag_handler/matsim_xml_writer.py	/^from mag_handler.matsim_plan import MatsimPlan, MatsimAct, MatsimLeg$/;"	kind:namespace	line:5
+MatsimLeg	../src/example_runner.py	/^from mag_handler.matsim_plan import MatsimAct, MatsimLeg$/;"	kind:namespace	line:5
+MatsimLeg	../src/mag_handler/matsim_plan.py	/^class MatsimLeg:$/;"	kind:class	line:26
+MatsimLeg	../src/mag_handler/matsim_xml_writer.py	/^from mag_handler.matsim_plan import MatsimPlan, MatsimAct, MatsimLeg$/;"	kind:namespace	line:5
+MatsimPlan	../src/mag_handler/mag_controller.py	/^from mag_handler.matsim_plan import MatsimPlan$/;"	kind:namespace	line:8
+MatsimPlan	../src/mag_handler/mag_to_matsim.py	/^from mag_handler.matsim_plan import MatsimPlan$/;"	kind:namespace	line:7
+MatsimPlan	../src/mag_handler/matsim_plan.py	/^class MatsimPlan:$/;"	kind:class	line:38
+MatsimPlan	../src/mag_handler/matsim_xml_writer.py	/^from mag_handler.matsim_plan import MatsimPlan, MatsimAct, MatsimLeg$/;"	kind:namespace	line:5
+MatsimXml	../src/example_runner.py	/^from mag_handler.matsim_xml_writer import MatsimXml$/;"	kind:namespace	line:6
+MatsimXml	../src/mag_handler/matsim_xml_writer.py	/^class MatsimXml:$/;"	kind:class	line:9
+Mode	../src/mag_handler/encoded_data_util.py	/^class Mode(Enum):$/;"	kind:class	line:53
+Mode	../src/mag_handler/mag_controller.py	/^from mag_handler.encoded_data_util import Purpose, Mode, MagConvIndex$/;"	kind:namespace	line:5
+Mode	../src/mag_handler/matsim_xml_writer.py	/^from mag_handler.encoded_data_util import Purpose, Mode$/;"	kind:namespace	line:6
+MySQLdb	../src/util/db_util.py	/^import MySQLdb.connections as connections$/;"	kind:namespace	line:2
+PopulationUtil	../src/database_make.py	/^from mag_handler.population_util import PopulationUtil$/;"	kind:namespace	line:4
+PopulationUtil	../src/mag_handler/population_util.py	/^class PopulationUtil:$/;"	kind:class	line:10
+Purpose	../src/mag_handler/encoded_data_util.py	/^class Purpose(Enum):$/;"	kind:class	line:31
+Purpose	../src/mag_handler/mag_controller.py	/^from mag_handler.encoded_data_util import Purpose, Mode, MagConvIndex$/;"	kind:namespace	line:5
+Purpose	../src/mag_handler/matsim_xml_writer.py	/^from mag_handler.encoded_data_util import Purpose, Mode$/;"	kind:namespace	line:6
+T	../src/mag_handler/mag_population.py	/^from typing import Dict, List, Tuple, T$/;"	kind:namespace	line:4
+T	../src/mag_handler/mag_to_matsim.py	/^from typing import Dict, List, Tuple, T$/;"	kind:namespace	line:4
+T	../src/mag_handler/matsim_plan.py	/^from typing import Dict, List, Tuple, T$/;"	kind:namespace	line:1
+T	../src/mag_handler/matsim_xml_writer.py	/^from typing import List, T$/;"	kind:namespace	line:1
+T	../src/mag_handler/population_util.py	/^from typing import List, Dict, Tuple, T$/;"	kind:namespace	line:3
+Tuple	../src/mag_handler/mag_controller.py	/^from typing import List, Dict, Tuple$/;"	kind:namespace	line:3
+Tuple	../src/mag_handler/mag_population.py	/^from typing import Dict, List, Tuple, T$/;"	kind:namespace	line:4
+Tuple	../src/mag_handler/mag_to_matsim.py	/^from typing import Dict, List, Tuple, T$/;"	kind:namespace	line:4
+Tuple	../src/mag_handler/matsim_plan.py	/^from typing import Dict, List, Tuple, T$/;"	kind:namespace	line:1
+Tuple	../src/mag_handler/population_util.py	/^from typing import List, Dict, Tuple, T$/;"	kind:namespace	line:3
+__init__	../src/mag_handler/encoded_data_util.py	/^    def __init__(self, mag_indexes: Dict[str, int]):$/;"	kind:member	line:17
+__init__	../src/mag_handler/mag_controller.py	/^    def __init__(self, mag_indexes):$/;"	kind:member	line:15
+__init__	../src/mag_handler/mag_population.py	/^    def __init__(self, hh_num, mag_hhid=0):$/;"	kind:member	line:42
+__init__	../src/mag_handler/mag_population.py	/^    def __init__(self, p_num, hh_num, mag_pid=0, mag_hhid=0):$/;"	kind:member	line:18
+__init__	../src/mag_handler/mag_population.py	/^    def __init__(self, proportion=1.0):$/;"	kind:member	line:67
+__init__	../src/mag_handler/mag_to_matsim.py	/^    def __init__(self, conv: MagConvIndex):$/;"	kind:member	line:14
+__init__	../src/mag_handler/matsim_plan.py	/^    def __init__(self, end, dur, type_, coord=None, maz=None):$/;"	kind:member	line:14
+__init__	../src/mag_handler/matsim_plan.py	/^    def __init__(self, mode, dur):$/;"	kind:member	line:30
+__init__	../src/mag_handler/matsim_plan.py	/^    def __init__(self, plan_id):$/;"	kind:member	line:43
+__init__	../src/mag_handler/matsim_xml_writer.py	/^    def __init__(self, location_type):$/;"	kind:member	line:10
+__init__	../src/mag_handler/population_util.py	/^    def __init__(self, db_params, population=None):$/;"	kind:member	line:14
+__init__	../src/util/db_util.py	/^    def __init__(self, user, password, db, host):$/;"	kind:member	line:14
+__init__.py	../src/mag_handler/__init__.py	1;"	kind:file	line:1
+__init__.py	../src/util/__init__.py	1;"	kind:file	line:1
+act	../src/mag_handler/matsim_xml_writer.py	/^    def act(self, parent, act: MatsimAct) -> et.ElementBase:$/;"	kind:member	line:45
+add_trip	../src/mag_handler/mag_population.py	/^    def add_trip(self, trip: List[T]):$/;"	kind:member	line:26
+agent	../src/mag_handler/mag_population.py	/^    def agent(self, p_num) -> MagAgent:$/;"	kind:member	line:47
+agent_exist	../src/mag_handler/mag_population.py	/^    def agent_exist(self, p_num) -> Tuple[MagAgent, bool]:$/;"	kind:member	line:54
+agent_to_rows	../src/mag_handler/population_util.py	/^    def agent_to_rows(self, agent: MagAgent) -> List[Tuple[T, ...]]:$/;"	kind:member	line:49
+bike	../src/mag_handler/encoded_data_util.py	/^    bike = 12$/;"	kind:variable	line:66
+breakfast	../src/mag_handler/encoded_data_util.py	/^    breakfast = 71$/;"	kind:variable	line:44
+config	../src/example_runner.py	/^    config = json.load(handle)$/;"	kind:variable	line:11
+connection	../src/util/db_util.py	/^    connection = connections.Connection$/;"	kind:variable	line:8
+connections	../src/util/db_util.py	/^import MySQLdb.connections as connections$/;"	kind:namespace	line:2
+conv_transit_knr	../src/mag_handler/encoded_data_util.py	/^    conv_transit_knr = 6$/;"	kind:variable	line:60
+conv_transit_pnr	../src/mag_handler/encoded_data_util.py	/^    conv_transit_pnr = 7$/;"	kind:variable	line:61
+conv_transit_walk_access	../src/mag_handler/encoded_data_util.py	/^    conv_transit_walk_access = 5$/;"	kind:variable	line:59
+convert	../src/mag_handler/mag_to_matsim.py	/^    def convert(self, population: MagPopulation) -> List[MatsimPlan]:$/;"	kind:member	line:18
+create_db	../src/mag_handler/population_util.py	/^    def create_db(self, table_name='ModMag', custom_schema=False, write_max=0):$/;"	kind:member	line:18
+create_db	../src/util/db_util.py	/^    def create_db(self, table, schema):$/;"	kind:member	line:22
+create_plan	../src/mag_handler/matsim_plan.py	/^    def create_plan(self, agent: MagAgent):$/;"	kind:member	line:89
+create_table	../src/mag_handler/population_util.py	/^    def create_table(self, table_name, custom_schema=False):$/;"	kind:member	line:29
+cursor	../src/util/db_util.py	/^    cursor = connections.cursors.Cursor$/;"	kind:variable	line:9
+database_make.py	../src/database_make.py	1;"	kind:file	line:1
+db	../src/mag_handler/population_util.py	/^    db = None$/;"	kind:variable	line:12
+db	../src/util/db_util.py	/^    db = None$/;"	kind:variable	line:12
+db_util.py	../src/util/db_util.py	1;"	kind:file	line:1
+defaultdict	../src/mag_handler/mag_population.py	/^from collections import defaultdict$/;"	kind:namespace	line:1
+defaultdict	../src/mag_handler/mag_to_matsim.py	/^from collections import defaultdict$/;"	kind:namespace	line:1
+define_agents	../src/mag_handler/mag_population.py	/^    def define_agents(self, plans: pd.DataFrame, conv: MagConvIndex, count=False):$/;"	kind:member	line:71
+dill	../src/database_make.py	/^import dill$/;"	kind:namespace	line:1
+dill	../src/example_runner.py	/^import dill$/;"	kind:namespace	line:2
+dill	../src/mag_handler/population_util.py	/^import dill$/;"	kind:namespace	line:1
+dinner	../src/mag_handler/encoded_data_util.py	/^    dinner = 73$/;"	kind:variable	line:46
+driver	../src/mag_handler/encoded_data_util.py	/^    def driver(self):$/;"	kind:member	line:70
+encoded_data_util.py	../src/mag_handler/encoded_data_util.py	1;"	kind:file	line:1
+et	../src/mag_handler/matsim_xml_writer.py	/^from lxml import etree as et$/;"	kind:namespace	line:2
+example	../src/database_make.py	/^example = PopulationUtil($/;"	kind:variable	line:10
+example_runner.py	../src/example_runner.py	1;"	kind:file	line:1
+floor	../src/mag_handler/matsim_xml_writer.py	/^from math import floor$/;"	kind:namespace	line:3
+food	../src/mag_handler/encoded_data_util.py	/^    food = 7$/;"	kind:variable	line:43
+get_trips	../src/mag_handler/mag_population.py	/^    def get_trips(self):$/;"	kind:member	line:30
+getpass	../src/database_make.py	/^from getpass import getpass$/;"	kind:namespace	line:2
+getpass	../src/mag_handler/population_util.py	/^from getpass import getpass$/;"	kind:namespace	line:2
+getpass	../src/util/db_util.py	/^from getpass import getpass$/;"	kind:namespace	line:4
+handler	../src/example_runner.py	/^handler = MagController(config['DEFAULT']['mag_indexes'])$/;"	kind:variable	line:14
+home	../src/mag_handler/encoded_data_util.py	/^    home = 0$/;"	kind:variable	line:33
+host	../src/util/db_util.py	/^    host = None$/;"	kind:variable	line:11
+hov2_driver	../src/mag_handler/encoded_data_util.py	/^    hov2_driver = 2$/;"	kind:variable	line:56
+hov3_driver	../src/mag_handler/encoded_data_util.py	/^    hov3_driver = 3$/;"	kind:variable	line:57
+hov_passenger	../src/mag_handler/encoded_data_util.py	/^    hov_passenger = 4$/;"	kind:variable	line:58
+json	../src/example_runner.py	/^import json$/;"	kind:namespace	line:3
+leg	../src/mag_handler/matsim_xml_writer.py	/^    def leg(self, parent, plan: MatsimLeg) -> et.ElementBase:$/;"	kind:member	line:41
+lunch	../src/mag_handler/encoded_data_util.py	/^    lunch = 72$/;"	kind:variable	line:45
+mag_controller.py	../src/mag_handler/mag_controller.py	1;"	kind:file	line:1
+mag_population.py	../src/mag_handler/mag_population.py	1;"	kind:file	line:1
+mag_to_matsim.py	../src/mag_handler/mag_to_matsim.py	1;"	kind:file	line:1
+matsim	../src/example_runner.py	/^matsim = handler.population_to_matsim(pop)$/;"	kind:variable	line:32
+matsim_plan.py	../src/mag_handler/matsim_plan.py	1;"	kind:file	line:1
+matsim_xml_writer.py	../src/mag_handler/matsim_xml_writer.py	1;"	kind:file	line:1
+multiple	../src/mag_handler/matsim_plan.py	/^    def multiple(self, trips: List[Tuple[T, ...]], incl_leg_t=False):$/;"	kind:member	line:62
+np	../src/mag_handler/mag_controller.py	/^import numpy as np$/;"	kind:namespace	line:1
+np	../src/mag_handler/mag_population.py	/^import numpy as np$/;"	kind:namespace	line:2
+np	../src/mag_handler/mag_to_matsim.py	/^import numpy as np$/;"	kind:namespace	line:2
+other_discretionary	../src/mag_handler/encoded_data_util.py	/^    other_discretionary = 9$/;"	kind:variable	line:48
+other_escort	../src/mag_handler/encoded_data_util.py	/^    other_escort = 42$/;"	kind:variable	line:39
+other_maintenence	../src/mag_handler/encoded_data_util.py	/^    other_maintenence = 6$/;"	kind:variable	line:41
+params	../src/database_make.py	/^params = {'user': 'root', 'db': 'example',$/;"	kind:variable	line:8
+partial	../src/mag_handler/mag_population.py	/^from functools import partial$/;"	kind:namespace	line:5
+pass__	../src/database_make.py	/^pass__ = getpass()$/;"	kind:variable	line:7
+pd	../src/mag_handler/mag_controller.py	/^import pandas as pd$/;"	kind:namespace	line:2
+pd	../src/mag_handler/mag_population.py	/^import pandas as pd$/;"	kind:namespace	line:3
+pd	../src/mag_handler/mag_to_matsim.py	/^import pandas as pd$/;"	kind:namespace	line:3
+plans	../src/example_runner.py	/^plans = handler.plans_by_col(config['DEFAULT']['mag_data_filename'],$/;"	kind:variable	line:15
+plans_by_col	../src/mag_handler/mag_controller.py	/^    def plans_by_col(self, filename, columns, col_dtype=None) -> pd.DataFrame:$/;"	kind:member	line:18
+plans_to_population	../src/mag_handler/mag_controller.py	/^    def plans_to_population(self, plans) -> MagPopulation:$/;"	kind:member	line:27
+pop	../src/example_runner.py	/^pop = handler.plans_to_population(plans)$/;"	kind:variable	line:17
+population_to_matsim	../src/mag_handler/mag_controller.py	/^    def population_to_matsim(self, population: MagPopulation) -> List[MatsimPlan]:$/;"	kind:member	line:32
+population_util.py	../src/mag_handler/population_util.py	1;"	kind:file	line:1
+prem_transit_knr	../src/mag_handler/encoded_data_util.py	/^    prem_transit_knr = 9$/;"	kind:variable	line:63
+prem_transit_pnr	../src/mag_handler/encoded_data_util.py	/^    prem_transit_pnr = 10$/;"	kind:variable	line:64
+prem_transit_walk_access	../src/mag_handler/encoded_data_util.py	/^    prem_transit_walk_access = 8$/;"	kind:variable	line:62
+pure_escort	../src/mag_handler/encoded_data_util.py	/^    pure_escort = 411$/;"	kind:variable	line:37
+ride_share	../src/mag_handler/encoded_data_util.py	/^    ride_share = 4$/;"	kind:variable	line:42
+rideshare	../src/mag_handler/encoded_data_util.py	/^    rideshare = 412$/;"	kind:variable	line:38
+school	../src/mag_handler/encoded_data_util.py	/^    school = 3$/;"	kind:variable	line:36
+school_bus	../src/mag_handler/encoded_data_util.py	/^    school_bus = 14$/;"	kind:variable	line:68
+set_loc	../src/mag_handler/matsim_xml_writer.py	/^    def set_loc(self, plan: MatsimPlan, node):$/;"	kind:member	line:34
+set_time	../src/mag_handler/matsim_xml_writer.py	/^    def set_time(self, act: MatsimAct, node):$/;"	kind:member	line:26
+shopping	../src/mag_handler/encoded_data_util.py	/^    shopping = 5$/;"	kind:variable	line:40
+single	../src/mag_handler/matsim_plan.py	/^    def single(self, trip: Tuple[T, ...], incl_leg_t=False):$/;"	kind:member	line:46
+sov	../src/mag_handler/encoded_data_util.py	/^    sov = 1$/;"	kind:variable	line:55
+special_event	../src/mag_handler/encoded_data_util.py	/^    special_event = 10$/;"	kind:variable	line:49
+sql	../src/util/db_util.py	/^import MySQLdb as sql$/;"	kind:namespace	line:1
+taxi	../src/mag_handler/encoded_data_util.py	/^    taxi = 13$/;"	kind:variable	line:67
+time_str	../src/mag_handler/matsim_xml_writer.py	/^    def time_str(self, minutes):$/;"	kind:member	line:14
+university	../src/mag_handler/encoded_data_util.py	/^    university = 2$/;"	kind:variable	line:35
+user	../src/util/db_util.py	/^    user = None$/;"	kind:variable	line:10
+visiting	../src/mag_handler/encoded_data_util.py	/^    visiting = 8$/;"	kind:variable	line:47
+walk	../src/mag_handler/encoded_data_util.py	/^    walk = 11$/;"	kind:variable	line:65
+work	../src/mag_handler/encoded_data_util.py	/^    work = 1$/;"	kind:variable	line:34
+work_related	../src/mag_handler/encoded_data_util.py	/^    work_related = 15$/;"	kind:variable	line:50
+write	../src/mag_handler/matsim_xml_writer.py	/^    def write(self, plans: List[MatsimPlan], filepath):$/;"	kind:member	line:51
+write_rows	../src/mag_handler/population_util.py	/^    def write_rows(self):$/;"	kind:member	line:59
+writer	../src/example_runner.py	/^writer = MatsimXml(location_type='maz')$/;"	kind:variable	line:35

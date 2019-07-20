@@ -1,5 +1,0 @@
-*.xml
-*.txt
-*.csv
-*.geojson
-src/mag_handler/__pycache__/*
